@@ -1,6 +1,5 @@
 import math
 def is_prime(n):
-    print "n",n
     if n is 1:
         return False
     elif n is 2:
@@ -16,12 +15,12 @@ prime_list = []
 max_range = 600851475143
 # max_range = 111
 divide_num = 2
-counter = max_range/divide_num
-while counter > 0:
+counter = 2
+while counter <= max_range:
     if max_range % counter == 0 and is_prime(counter):
-        print "result:" , counter
-        break
-    else:
-        counter -= 1
-        # divide_num += 1
-        # counter = max_range/divide_num
+        max_range /= counter
+        print "counter",counter
+        print "max_range",max_range
+        counter = 2
+        continue
+    counter += 1
