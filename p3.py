@@ -1,17 +1,27 @@
+import math
 def is_prime(n):
+    print "n",n
     if n is 1:
         return False
-    for i in range(2,n/2):
-        if n % i is 0:
+    elif n is 2:
+        return True
+    counter = 2
+    while counter <= int(math.sqrt(n)):
+        if n % counter is 0:
             return False
+        counter += 1
     return True
 
 prime_list = []
-last_prime = 2
-for i in range(1,600851475143):
-    if is_prime(i):
-        last_prime = i
-        # prime_list.append(i)
-# print "prime_list",prime_list
-# print "prime_list[-1]",prime_list[-1]
-print last_prime
+max_range = 600851475143
+# max_range = 111
+divide_num = 2
+counter = max_range/divide_num
+while counter > 0:
+    if max_range % counter == 0 and is_prime(counter):
+        print "result:" , counter
+        break
+    else:
+        counter -= 1
+        # divide_num += 1
+        # counter = max_range/divide_num
