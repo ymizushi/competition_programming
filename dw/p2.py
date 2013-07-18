@@ -135,8 +135,10 @@ def scan(tile):
     else:
         return scan(choiceTile(tile))
 #  
-tileArray[1].beforeTile = None
-tileArray[1].searched = True
+startTile = filter(lambda x:x.kind == "S", tileArray)
+
+startTile[0].beforeTile = None
+startTile[0].searched = True
 scan(tileArray[1])
 for i in tileArray:
     if i.beforeTile == None:
