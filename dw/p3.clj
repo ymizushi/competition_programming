@@ -1,3 +1,31 @@
+(require '[clojure.set])
+(def n 5)
+(def s '(1 2 4 6 8))
+(def t '(3 5 7 9 10))
+
+; (defn zip [list1 list2]
+;   (for [l list1] (list l m)))
+; 
+; (defn create-set [zip-list]
+;   (range (first zip-list) (last zip-list)))
+; 
+; (println (zip s t))
+; (println (map create-set (zip s t)))
+
+(def set-p (set '(1 2 3 4 5 6 7 8 9)))
+(def set-st (list (set '(1 2)) (set '(2 3 4)) (set '(4 5 6)) (set '(6 7 8)) (set '(8 9))))
+
+(defn min-count [sets]
+  (filter #([e] (> (count e) ))))
+
+(defn search [set-p set-st]
+  (filter (fn [set] (= (count set) (min-count set-st))) set-st))
+
+(println (search set-p set-st))
+(println (clojure.set/subset? (nth set-st 0) set-p))
+(println (nth set-st 0) )
+(println (clojure.set/difference set-p (nth set-st 0)))
+
 ;区間スケジューリング問題
 ;n個の仕事があります。各仕事は時間siにはじまり、時間tiに終わります。あなたは各仕事について、参加するか参加しないかを選ばなければなりません。仕事に参加するならば、その仕事のはじめから終わりまで参加しなければなりません。また、参加する仕事の時間帯が重なってはなりません(開始の瞬間・終了の時間だけが重なるのも許されません)
 ;
