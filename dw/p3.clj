@@ -18,11 +18,10 @@
     (if (not (empty? subset-list))
       (let [subset (nth subset-list 0)]
         (if (clojure.set/subset? subset set-all)
-          (search (clojure.set/difference set-all (rest subset-list) (inc count)))
+          (search (clojure.set/difference set-all (rest subset-list)) (inc count))
           count)
         count))))
 
-(println (min-count list-subset))
 (println (search list-subset set-all 0))
 
 ;(println (clojure.set/subset? (nth list-subset 0) set-all))
