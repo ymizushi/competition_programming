@@ -53,4 +53,5 @@ def __main__():
                 max_count = calc_count
     print max_count
 
-__main__()
+if __name__ == '__main__':
+    __main__()
