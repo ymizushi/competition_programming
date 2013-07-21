@@ -22,6 +22,11 @@
           count)
         count))))
 
+(def set-p (set '(1 2 3 4 5 6 7 8 9)))
+(def set-st (list (set '(1 2)) (set '(2 3 4)) (set '(4 5 6)) (set '(6 7 8)) (set '(8 9))))
+(defn min-count [sets]
+  (filter #([e] (> (count e) ))))
+
 (println (search list-subset set-all 0))
 
 ;(println (clojure.set/subset? (nth list-subset 0) set-all))
