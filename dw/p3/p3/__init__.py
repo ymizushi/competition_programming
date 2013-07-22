@@ -35,4 +35,9 @@ def calc(sublist, alllist, count):
         else:
             continue
     return count
+
 print calc(t_s, all_st, 0)
+
+
+class Hoge:
+    pass
