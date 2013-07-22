@@ -59,6 +59,7 @@ def __main__():
             if calc_count > max_count:
                 max_count = calc_count
     print max_count
+    return max_count
 
 if __name__ == '__main__':
     __main__()
