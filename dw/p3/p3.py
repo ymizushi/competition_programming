@@ -1,6 +1,17 @@
-n = 5
-s = [1, 2, 4, 6, 8, 10, 11]
-t = [3, 5, 7, 9, 10, 14, 13]
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+# ファイルからテストデータ読み込み
+def parse(filename):
+    data = dict()
+    with open(filename) as f:
+        for line in f:
+            data_set = line.strip('\n').split(' ')
+            data[data_set[0]] = data_set[1].split(',')
+    return data
+test_data =  parse('test_data.txt')
+s = map(lambda x: int(x), test_data.get('s'))
+t = map(lambda x: int(x), test_data.get('t'))
 
 def exclude_list(sublist, all_list):
     subset = set(sublist)
@@ -17,7 +28,8 @@ all_st = range(min(s + t),max(s+t))
 # print all_st
 # print "intersetction", exclude_list([1,2,3,4], [1,2,3,4,5,6])
 
-t_s = map(lambda x: range(x[0], x[1]), zip(s, t))
+t_s = sorted(map(lambda x: range(x[0], x[1]), zip(s, t)), key=lambda x:len(x))
+# print t_s
 
 # len_t_s = map(lambda x: len(x), t_s)
 # min_len = min(len_t_s)
@@ -28,6 +40,7 @@ t_s = map(lambda x: range(x[0], x[1]), zip(s, t))
 def calc(sublist, alllist, count):
     for sub in sublist:
         if set(sub).issubset(set(alllist)):
+            # print sub,alllist
             return calc(exclude_list_list(sub, sublist), exclude_list(sub, alllist), count+1)
         else:
             continue
