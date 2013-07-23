@@ -2,64 +2,64 @@
 # -*- coding: utf-8 -*-
 
 # ファイルからテストデータ読み込み
-def parse(filename):
-    data = dict()
-    with open(filename) as f:
-        for line in f:
-            data_set = line.strip('\n').split(' ')
-            data[data_set[0]] = data_set[1]
-    return data
-test_data =  parse('test_data.txt')
-s = test_data.get('s')
-t = test_data.get('t')
 
-# メモ化のためのハッシュマップを用意
-memo_map = dict()
-def gen_key(x, y):
-    return str(x)+"_"+str(y)
-def get_memo(x, y):
-    key = gen_key(x, y)
-    if memo_map.get(key):
-        return memo_map[key]
-    return None
-def set_memo(x, y, count):
-    key = gen_key(x, y)
-    memo_map[key] = count
+class P4():
+    def parse(self, filename):
+        data = dict()
+        with open(filename) as f:
+            for line in f:
+                data_set = line.strip('\n').split(' ')
+                data[data_set[0]] = data_set[1]
+        return data
 
-# (x, y-1), (x-1, y), がわかれば(x ,y)が計算出来る
-def calc(x, y):
-    if x < 0 or y < 0 or len(s)-1 < x or len(t)-1 < y: # index外は 0を返す
-        return 0
+    # メモ化のためのハッシュマップを用意
+    def gen_key(self, x, y):
+        return str(x)+"_"+str(y)
 
-    # s[index] == t[index]なら カウントを増やす
-    up_count = 0
-    if s[x] == t[y]:
-        up_count +=1
+    def get_memo(self, x, y):
+        key = self.gen_key(x, y)
+        if self.memo_map.get(key):
+            return self.memo_map[key]
+        return None
 
-    # (x, y-1)についてメモ化されていれば取得、無ければ計算してメモ化
-    calcx = get_memo(x, y-1)
-    if not calcx:
-        calcx = calc(x, y-1)
-        set_memo(x,y-1,calcx)
+    def set_memo(self, x, y, count):
+        key = self.gen_key(x, y)
+        self.memo_map[key] = count
 
-    # (x-1, y)についてメモ化されていれば取得、無ければ計算してメモ化
-    calcy = get_memo(x-1, y)
-    if not calcy:
-        calcy = calc(x-1, y)
-        set_memo(x-1, y, calcy)
+    def __init__(self):
+        test_data = self.parse('test_data.txt')
+        self.s = test_data.get('s')
+        self.t = test_data.get('t')
+        self.memo_map = dict()
 
-    return max(calcx, calcy) + up_count
+    # (x, y-1), (x-1, y), がわかれば(x ,y)が計算出来る
+    def calc(self, x, y):
+        if x < 0 or y < 0 or len(self.s)-1 < x or len(self.t)-1 < y: # index外は 0を返す
+            return 0
 
-# sの長さ * tの長さだけループ
-def __main__():
-    max_count = 0
-    for y in range(len(t)):
-        for x in range(len(s)):
-            calc_count = calc(x, y)
-            if calc_count > max_count:
-                max_count = calc_count
-    print max_count
-    return max_count
+        # s[index] == t[index]なら カウントを増やす
+        up_count = 1 if self.s[x] == self.t[y] else 0
 
-if __name__ == '__main__':
-    __main__()
+        # (x, y-1)についてメモ化されていれば取得、無ければ計算してメモ化
+        calcx = self.get_memo(x, y-1)
+        if not calcx:
+            calcx = self.calc(x, y-1)
+            self.set_memo(x,y-1,calcx)
+
+        # (x-1, y)についてメモ化されていれば取得、無ければ計算してメモ化
+        calcy = self.get_memo(x-1, y)
+        if not calcy:
+            calcy = self.calc(x-1, y)
+            self.set_memo(x-1, y, calcy)
+
+        return max(calcx, calcy) + up_count
+
+    # sの長さ * tの長さだけループ
+    def calc_all(self):
+        max_count = 0
+        for y in range(len(self.t)):
+            for x in range(len(self.s)):
+                calc_count = self.calc(x, y)
+                if calc_count > max_count:
+                    max_count = calc_count
+        return max_count
