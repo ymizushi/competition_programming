@@ -26,8 +26,8 @@ class P4():
         key = self.gen_key(x, y)
         self.memo_map[key] = count
 
-    def __init__(self):
-        test_data = self.parse('test_data.txt')
+    def __init__(self, filename):
+        test_data = self.parse(filename)
         self.s = test_data.get('s')
         self.t = test_data.get('t')
         self.memo_map = dict()
