@@ -1,0 +1,4 @@
+n 4
+m 4
+s abcd
+t becd
