@@ -1,7 +1,7 @@
 import unittest
 from p3 import GreedMethod
 
-class TestP3(unittest.TestCase):
+class TestGreedMethod(unittest.TestCase):
     def setUp(self):
         self.greed_method = GreedMethod('test_data.txt')
 
