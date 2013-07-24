@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-ROW = 10
-COLUMN = 10
-
 class Tile:
     def __init__(self,kind,x,y):
         self.kind = kind
@@ -11,79 +8,94 @@ class Tile:
         self.searched = False
         self.x = x
         self.y = y
+
+class P2():
+    def __init__(self, filename):
+        self.tile_map = []
+        self.row = 10
+        self.column = 10
+        self.tile_list = []
+        self.tile_que = []
+
+        self.tile_map = self.parse(filename)
+
+        for y in range(self.column):
+            for x in range(self.row):
+                self.tile_list += [Tile(self.tile_map[y][x],x,y)]
+
+        start_tile = filter(lambda x:x.kind == "S", self.tile_list)[0]
+        self.tile_que += [start_tile]
+
+    def calc(self):
+        for y in range(self.column):
+            for x in range(self.row):
+                self.tile_list += [Tile(self.tile_map[y][x],x,y)]
+         
+        tile, count = self.choice_tile(self.tile_que,0)
+        end_tile = filter(lambda x:x.kind == "G", self.tile_list)[0]
+        return self.count_path(end_tile,0)
+
+    # ファイルからテストデータ読み込み
+    def parse(self, filename):
+        data = []
+        with open(filename) as f:
+            for line in f:
+                data += [list(line.strip('\n'))]
+        return data
+
+
+    def get_tile_by_x_y(self, x, y):
+        if x<0 or y < 0:
+            return None
+        if x >= self.row or y >= self.column:
+            return None
+        return self.tile_list[y*self.row + x]
+     
+    def check(self, x,y):
+        if x<0 or y < 0:
+            return False
+        if x >= self.row or y >= self.column:
+            return False
+        tile = self.get_tile_by_x_y(x,y)
+        if tile.searched:
+            return False
+        if tile.kind is "#":
+            return False
+        return True
+     
+    def surround_tiles(self, tile):
+        tiles = []
+        if self.check(tile.x,tile.y-1):
+            next_tile = self.get_tile_by_x_y(tile.x,tile.y-1)
+            next_tile.before_tile = tile
+            tiles += [next_tile]
+        if self.check(tile.x+1,tile.y):
+            next_tile = self.get_tile_by_x_y(tile.x+1,tile.y)
+            next_tile.before_tile = tile
+            tiles += [next_tile]
+        if self.check(tile.x,tile.y+1):
+            next_tile = self.get_tile_by_x_y(tile.x,tile.y+1)
+            next_tile.before_tile = tile
+            tiles += [next_tile]
+        if self.check(tile.x-1,tile.y):
+            next_tile = self.get_tile_by_x_y(tile.x-1,tile.y)
+            next_tile.before_tile = tile
+            tiles += [next_tile]
+        return tiles
+
  
-tile_list = []
+    def choice_tile(self, tile_que,count):
+        tile = tile_que.pop(0)
+        tile.searched = True
+        if tile.kind == "G":
+            return tile,count
+        tiles = self.surround_tiles(tile)
+        tile_que += tiles
+        if tile_que:
+            return self.choice_tile(tile_que,count+1)
+        raise Exception("not found")
 
-tile_que = []
-
-tile_map = [
-["#","S","#","#","#","#","#","#",".","#"],
-[".",".",".",".",".",".","#",".",".","#"],
-[".","#",".","#","#",".","#","#",".","#"],
-[".","#",".",".",".",".",".",".",".","."],
-["#","#",".","#","#",".","#","#","#","#"],
-[".",".",".",".","#",".",".",".",".","#"],
-[".","#","#","#","#","#","#","#",".","#"],
-[".",".",".",".","#",".",".",".",".","."],
-[".","#","#","#","#",".","#","#","#","."],
-[".",".",".",".","#",".",".",".","G","#"],
-]
-
-for y in range(COLUMN):
-    for x in range(ROW):
-        tile_list += [Tile(tile_map[y][x],x,y)]
-
-def get_tile_by_x_y(x, y):
-    if x<0 or y < 0:
-        return None
-    if x >= ROW or y >= COLUMN:
-        return None
-    return tile_list[y*ROW + x]
- 
-def check(x,y):
-    if x<0 or y < 0:
-        return False
-    if x >= ROW or y >= COLUMN:
-        return False
-    tile = get_tile_by_x_y(x,y)
-    if tile.searched:
-        return False
-    if tile.kind is "#":
-        return False
-    return True
- 
-def surround_tiles(tile):
-    tiles = []
-    if check(tile.x,tile.y-1):
-        tile = get_tile_by_x_y(tile.x,tile.y-1)
-        tiles += [tile]
-    if check(tile.x+1,tile.y):
-        tile = get_tile_by_x_y(tile.x+1,tile.y)
-        tiles += [tile]
-    if check(tile.x,tile.y+1):
-        tile = get_tile_by_x_y(tile.x,tile.y+1)
-        tiles += [tile]
-    if check(tile.x-1,tile.y):
-        tile = get_tile_by_x_y(tile.x-1,tile.y)
-        tiles += [tile]
-    return tiles
-
-start_tile = filter(lambda x:x.kind == "S", tile_list)
-
-tile_que += [start_tile[0]]
- 
-def choice_tile(tile_que,count):
-    tile = tile_que.pop(0)
-    tile.searched = True
-    if tile.kind == "G":
-        return tile,count
-    tiles = surround_tiles(tile)
-    tile_que += tiles
-    if tile_que:
-        return choice_tile(tile_que,count+1)
-    raise Exception("not found")
- 
-tile,count = choice_tile(tile_que,0)
-print tile.x
-print tile.y
-print count
+    def count_path(self, tile,count):
+        if tile.before_tile and tile.kind != "S":
+            return self.count_path(tile.before_tile, count+1)
+        return count
