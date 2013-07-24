@@ -30,6 +30,8 @@ class P4():
         test_data = self.parse(filename)
         self.s = test_data.get('s')
         self.t = test_data.get('t')
+        print self.s
+        print self.t
         self.memo_map = dict()
 
     # (x, y-1), (x-1, y), がわかれば(x ,y)が計算出来る
@@ -61,5 +63,6 @@ class P4():
             for x in range(len(self.s)):
                 calc_count = self.calc(x, y)
                 if calc_count > max_count:
+                    print x,y,calc_count
                     max_count = calc_count
         return max_count
