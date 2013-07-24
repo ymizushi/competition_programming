@@ -8,5 +8,4 @@
       (:searched booby)
         (conj head (struct num-map true false))
       (not (:searched booby))
-        (conj head )
-    )))
+        (conj head ))))
