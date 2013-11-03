@@ -30,7 +30,6 @@ def fib_list():
         n += 1
         # fib_list.append(fib_r(n))
 
-
 sum_num = 0
 for num in fib_list():
     if num %2 == 0:
