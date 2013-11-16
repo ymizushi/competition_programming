@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import unittest
+
 def merge(a, b):
     merge = []
     while(not (a == [] and b == [])):
@@ -17,6 +19,12 @@ def merge(a, b):
             merge += [pop_item]
     return merge
 
+def split(l):
+    middle = len(l)/2
+    a = l[0:middle]
+    b = l[middle:]
+    return a, b
+
 def sort_l(a):
     if len(a) > 2:
         x, y = split(a)
@@ -28,19 +36,17 @@ def sort_l(a):
             return a
         else:
             if (a[0] < a[1]):
-                return [a[0],a[1]]
+                return [a[0], a[1]]
             else:
-                return [a[1],a[0]]
+                return [a[1], a[0]]
     else:
         raise Exception()
 
-def split(l):
-    middle = len(l)/2
-    a = l[0:middle]
-    b = l[middle:]
-    return a, b
+class TestMerge(unittest.TestCase):
+    def test_solve(self):
+        input    = [3, 4, 40, 2000, 50, 20, 111, 4, 5, 67,  80,  20,  5, 4, 2, 29, 10, 6]
+        expected = [2, 3, 4, 4, 4, 5, 5, 6, 10, 20, 20, 29, 40, 50, 67, 80, 111, 2000] 
+        self.assertEqual(sort_l(input), expected)
 
-def main(l):
-    return sort_l(l)
-
-print main([3,4,40,2000,50,20,111,4,5,67, 80, 20, 5,4,2,29,10,6])
+if __name__ == '__main__':
+    unittest.main()
