@@ -40,13 +40,6 @@ def split(l):
     b = l[middle:]
     return a, b
 
-def split_l(l):
-    a,b = split(l)
-    if len(a) > 2:
-        return split(a)
-    if len(b) > 2:
-        return split(b)
-
 def main(l):
     return sort_l(l)
 
