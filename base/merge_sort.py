@@ -48,9 +48,6 @@ def split_l(l):
         return split(b)
 
 def main(l):
-    a,b = split(l)
-    sorted_a = sort_l(a)
-    sorted_b = sort_l(b)
-    return merge(sorted_a,sorted_b)
+    return sort_l(l)
 
-print main([3,4,40, 80, 20, 5,4,2,29,10,6])
+print main([3,4,40,2000,50,20,111,4,5,67, 80, 20, 5,4,2,29,10,6])
