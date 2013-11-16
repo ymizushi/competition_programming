@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+import unittest
+
 def reverse(str):
     stack = []
     for c in str:
@@ -9,4 +13,10 @@ def reverse(str):
             continue
         return reversed_str
 
-print reverse("foobar")
+class TestMerge(unittest.TestCase):
+    def test_solve(self):
+        input    = "foobar"
+        expected = "raboof" 
+        self.assertEqual(reverse(input), expected)
+if __name__ == '__main__':
+    unittest.main()
