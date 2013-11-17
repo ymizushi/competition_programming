@@ -6,11 +6,11 @@
 (define (max-pal)
   (let loop-n ([n 989])
     (let loop-x ([x 999])
-      (list n x) (let* ([s-n (number->string n)]
-             [target (string->number (string-append
-                                 s-n
-                                 (list->string (reverse (string->list s-n)))
-                                 ))]
+      (let* ([s-n (number->string n)]
+             [target (string->number
+                       (string-append
+                         s-n
+                         (list->string (reverse (string->list s-n)))))]
              [y (/ target x)])
         (if (and
               (= 0 (remainder target x))

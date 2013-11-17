@@ -6,10 +6,9 @@ def max_palid():
     for n in range(989, 100, -1):
         for x in range(999, 100, -1):
             target = int(str(n) + str(n)[::-1])
-            if (target % x == 0):
-                y = target / x
-                if (len(str(y)) == 3):
-                    return target
+            y = target / x
+            if (target % x == 0 and len(str(y)) == 3):
+                return target
 
 class TestMerge(unittest.TestCase):
     def test_solve(self):
