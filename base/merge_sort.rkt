@@ -7,14 +7,14 @@
     (cond 
       [(and (null? a) (null? b)) l]
       [(and (null? a) (not (null? b)))
-         (merge a (rest b) (cons (first b) l))]
+         (merge a (rest b) (append l (list (first b))))]
       [(and (not (null? a)) (null? b))
-         (merge (rest a) b (cons (first a) l))]
+         (merge (rest a) b (append l (list (first a))))]
       [(>=  (first a) (first b))
-         (merge a (rest b) (cons (first b) l))]
+         (merge a (rest b) (append l (list (first b))))]
       [(< (first a) (first b))
-         (merge (rest a) b (cons (first a) l))]))
-    (reverse (merge a b null)))
+         (merge (rest a) b (append l (list (first a))))]))
+    (merge a b null))
 
 (define (split l)
   (let ([m (/ (length l) 2)])
