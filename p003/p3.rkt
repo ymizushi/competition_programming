@@ -19,7 +19,7 @@
 (check-expect (prime? 3) true)
 (check-expect (prime? 19) true)
 
-(define (prime-lst n)
+(define (last-prime-factor n)
   (let loop ([i 2] [n n] [l (list)])
     (if (i . <= . n)
       (if (and (= 0 (remainder n i)) (prime? i))

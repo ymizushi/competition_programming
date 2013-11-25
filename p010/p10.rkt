@@ -5,28 +5,29 @@
 (define (prime? n)
   (cond 
     [(not (integer? n)) (begin (print "n must be integer!") false)]
-    [(< n 2) false]
+    [(= n 1) false]
+    [(= n 2) true]
     [else 
       (let loop ([cnt 2])
-        (if (= (remainder n cnt) 0)
-          (if (= n cnt) true false)
-          (loop (+ 1 cnt))))]))
+        (if (<= cnt (round (sqrt n)))
+          (if (= (remainder n cnt) 0)
+            false
+            (loop (add1 cnt)))
+          true))]))
 (check-expect (prime? 1) false)
 (check-expect (prime? 2) true)
 (check-expect (prime? 3) true)
 (check-expect (prime? 19) true)
 
-(define (list-prime n)
-  (let loop ([i 0] [prime-list null])
-    (if (= n i)
-      prime-list
-      (if (prime? i)
-        (loop (+ 1 i) (cons i prime-list))
-        (loop (+ 1 i) prime-list)))))
+(define (sum-prime-list n)
+   (let loop ([i 1] [sum 0])
+     (if (< i n)
+       (if (prime? i)
+         (loop (add1 i) (+ i sum))
+         (loop (add1 i) sum))
+       sum)))
 
-(define (max-prime n))
-
-(max-prime 10)
+(check-expect (sum-prime-list 10) 17)
+(check-expect (sum-prime-list 2000000) 142913828922)
 
 (test)
-
