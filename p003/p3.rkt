@@ -14,6 +14,7 @@
             false
             (loop (add1 cnt)))
           true))]))
+
 (check-expect (prime? 1) false)
 (check-expect (prime? 2) true)
 (check-expect (prime? 3) true)
@@ -28,5 +29,5 @@
         (loop (add1 i) n l))
       (apply max l))))
 ;
-(check-expect (prime-lst 600851475143) 6857)
+(check-expect (last-prime-factor 600851475143) 6857)
 (test)
