@@ -2,14 +2,14 @@
 #lang racket
 (require test-engine/racket-tests)
 
-(define hash-table (make-hash))
+;(define hash-table (make-hash))
 
-(define (create-hash hash key value)
-  (if (hash-has-key? hash key)
-    (hash-ref hash key)
-    (do 
-      (hash-set! hash key value)
-      null)))
+;(define (create-hash hash key value)
+;  (if (hash-has-key? hash key)
+;    (hash-ref hash key)
+;    (do 
+;      (hash-set! hash key value)
+;      null)))
 
 (define (nth-tri-num n)
   (let loop ([i 1] [sum 0])
@@ -31,7 +31,7 @@
       (nth-tri-num i)
       (loop (add1 i))))) 
 
-(hash-has-key? (make-hash (list (cons "hoge" "piyo"))) "hoge")
+;(hash-has-key? (make-hash (list (cons "hoge" "piyo"))) "hoge")
 
 (check-expect (nth-tri-num 1) 1)
 (check-expect (nth-tri-num 2) 3)
@@ -46,7 +46,7 @@
 (check-expect (count-factor 10) 4)
 
 (check-expect (have-n-divisors 4) 6)
-;(check-expect (have-n-divisors 50) 25200)
+(check-expect (have-n-divisors 50) 25200)
 ;(check-expect (have-n-divisors 500) 25200)
 
 (test)
