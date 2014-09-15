@@ -52,7 +52,8 @@ class TestMerge(unittest.TestCase):
         self.assertEqual(nth_tri_num(4), 10)
         self.assertEqual(count_factor(10), 4)
         self.assertEqual(have_n_divisors(50), 25200)
-        self.assertEqual(have_n_divisors(500), 25200)
+        self.assertEqual(have_n_divisors(100), 73920)
+        self.assertEqual(have_n_divisors(200), 73920)
 
 if __name__ == '__main__':
     unittest.main()
