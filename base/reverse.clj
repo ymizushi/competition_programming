@@ -1,14 +1,16 @@
 (use 'clojure.test)
 
-(deftest test-add []
-  (testing "add"
-    (is (= 2 (+ 1 1))))) 
 
 (defn rev-str [input output]
-  (if (= input "")
-    output
-    (let [c (first input)
-          r (rest input)]
-      (recur rev-str (join c output)))))
+  (loop [input output]
+    (if (= input "")
+      output
+      (let [c (first input)
+            r (rest input)]
+        (recur r (str c output))))))
+
+(deftest test-add []
+  (testing "rev-str"
+    (is (= (rev-str "hoge" "") "egoh"))))
 
 (run-tests)
