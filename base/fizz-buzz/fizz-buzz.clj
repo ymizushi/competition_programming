@@ -1,6 +1,5 @@
 (use 'clojure.test)
 
-
 (defn fizz-buzz [i]
   (cond
     (= (rem i 15) 0) "Fizz Buzz"
