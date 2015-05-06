@@ -8,9 +8,20 @@ let count_divisor n =
   in
     count_divisor n n 0;;
 
-let rec triangle_num n = 
-  if n = 1 then
-    1
-  else triangle_num (n-1) + n;;
+let table = Hashtbl.create 2048
 
-print_int(count_divisor(triangle_num 7));;
+let rec triangle_num n = 
+  let key = (n) in
+  if Hashtbl.mem table key then Hashtbl.find table key
+  else
+    let value = if n = 1 then 1 else triangle_num (n-1) + n in
+    Hashtbl.add table key value;
+    value;;
+
+  print_int(count_divisor(100000000));;
+(*
+  print_int(triangle_num(20010));;
+*)
+(*
+  print_int(count_divisor(triangle_num 40000));;
+*)
