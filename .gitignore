@@ -37,3 +37,5 @@ nosetests.xml
 *.un~
 *.beam
 .DS_Store
+
+**/*.class

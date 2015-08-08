@@ -31,8 +31,7 @@ val hashMap = Map(
 )
 
 def count(str: String): Int {
-  str.filter(c => c != ' ').
-
+  str.filter(_ != ' ').cout
 }
 
 println(hashMap)
