@@ -20,37 +20,36 @@ def Exp(object):
 def Priority(object):
     pass
 
-class State(object):
-    NUM = 'NUM'
 
+class State(object):
     def __init__(self):
-        self.state = None
         self.output = ''
+
+    def is_num(self, char):
+        return char in [str(i) for i in range(10)]
+
     def input(self, char):
-        if char in [str(i) for i in range(10)]:
-            self.state = self.NUM
+        if char == ' ':
+            return None
+        elif self.is_num(self.output) and self.is_num(char):
             self.output += char
             return None
         else:
-            if self.output == '':
-                return char
-            else:
-                return_value = self.output
-                self.output = ''
-                return return_value
-
+            rvalue = self.output
+            self.output = char
+            return rvalue
 
 def tokenize(input_str):
     tokens = []
     state = State()
-    for char in input_str:
+    for char in input_str+'\n':
         result = state.input(char)
         if result:
             tokens += [result]
     return tokens
 
 
-print (tokenize("( 123  +  345)"))
+print(tokenize("( 123  +  345)"))
 
 
 class TestMerge(unittest.TestCase):
