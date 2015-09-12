@@ -23,6 +23,7 @@ int main(int argc, char const* argv[])
     Map *map = HashTable_get(hashTable, "abcd");
     printf("%s\n", map->key);
     printf("%d\n", map->value);
+    free(hashTable);
     return 1;
 }
 
