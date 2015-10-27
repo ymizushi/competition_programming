@@ -1,24 +1,29 @@
+#include <assert.h>
+
 #include "hash_table.h"
 
 int hash_index(const int id) {
     return id % __HASH_TABLE_SIZE;
 }
 
-
 Value *new_value(int id, char* str) {
-    return (Value*)malloc(sizeof(Value));
+    Value *value = (Value*)malloc(sizeof(Value));
+    value->id = id;
+    value->value = str;
+    value->next_value = NULL;
+    return value;
 }
 
 Value *get_value(Value *value, int id) {
-    if (value == NULL ) {
-        return NULL;
-    } else if (value->id == id) {
-        return value;
-    } else if (value->next_value == NULL) {
-        return NULL;
-    } else {
-        return get_value(value->next_value, id);
+    Value *v;
+    for(v=value; v !=NULL; v=v->next_value) {
+        if (value->id == id) {
+            return value;
+        } else {
+            ;
+        }
     }
+    return NULL;
 }
 
 Value *HashTable_get(HashTable *hashTable, const int id) {
@@ -40,11 +45,22 @@ void HashTable_set(HashTable *hashTable, Value *value) {
 int main(int argc, char const* argv[])
 {
     HashTable *hashTable = (HashTable*)malloc(sizeof(HashTable));
-    Value *value = new_value(0,"hoge"); 
-    HashTable_set(hashTable, value);
-    Value *result = HashTable_get(hashTable, 0);
+    Value *value1 = new_value(0,"hoge"); 
+    Value *value2 = new_value(1,"piyo"); 
+    Value *value3 = new_value(100,"foo"); 
+    // Value *value4 = new_value(101,"bar"); 
+    HashTable_set(hashTable, value1);
+    HashTable_set(hashTable, value2);
+    HashTable_set(hashTable, value3);
+    // HashTable_set(hashTable, value4);
+    Value *result1 = HashTable_get(hashTable, 0);
+    Value *result2 = HashTable_get(hashTable, 1);
+    printf("%d", result1->id);
+    printf("%s", result1->value);
+    printf("%d", result2->id);
+    printf("%s", result2->value);
+    // assert(result->value != NULL);
 
-    printf("%s\n", result->value);
     free(hashTable);
     return 1;
 }
