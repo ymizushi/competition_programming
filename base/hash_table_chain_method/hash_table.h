@@ -11,11 +11,11 @@
 typedef struct value {
     int id;
     char *value;
-    value *next_value;
+    struct value *next_value;
 } Value;
 
 typedef struct hash_table {
-    value *value_array[__HASH_TABLE_SIZE];
+    Value *value_array[__HASH_TABLE_SIZE];
 } HashTable;
 
 #endif
