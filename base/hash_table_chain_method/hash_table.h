@@ -8,14 +8,30 @@
 
 #define __HASH_TABLE_SIZE 100
 
-typedef struct value {
+typedef struct hash_table {
+    Element *elements[__HASH_TABLE_SIZE];
+} HashTable;
+
+HashTable *HashTable_new(); 
+void *HashTable_free(HashTable*); 
+
+typedef struct element {
     int id;
-    char *value;
-    struct value *next_value;
+    struct value *v;
+    struct element *next;
+} Element;
+
+
+Element *Element_new(int, value);
+
+typedef struct value {
+    cha* str
 } Value;
 
-typedef struct hash_table {
-    Value *value_array[__HASH_TABLE_SIZE];
-} HashTable;
+Element *Element_new(int id, Value *v) {
+    Element *element = (Element*)malloc(sizeof(Element));
+}
+
+
 
 #endif

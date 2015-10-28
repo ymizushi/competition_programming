@@ -2,10 +2,6 @@
 
 #include "hash_table.h"
 
-int hash_index(const int id) {
-    return id % __HASH_TABLE_SIZE;
-}
-
 Value *new_value(int id, char* str) {
     Value *value = (Value*)malloc(sizeof(Value));
     value->id = id;
@@ -14,9 +10,17 @@ Value *new_value(int id, char* str) {
     return value;
 }
 
+
+HashTable *HashTable_new() {
+    return (HashTable*)malloc(sizeof(HashTable));
+}
+
+int hash_index(const int id) {
+    return id % __HASH_TABLE_SIZE;
+}
+
 Value *get_value(Value *value, int id) {
-    Value *v;
-    for(v=value; v !=NULL; v=v->next_value) {
+    for(Value *v=value; v !=NULL; v=v->next_value) {
         if (value->id == id) {
             return value;
         } else {
@@ -32,6 +36,7 @@ Value *HashTable_get(HashTable *hashTable, const int id) {
     return get_value(target, id);
 }
 
+
 void HashTable_set(HashTable *hashTable, Value *value) {
     Value *target = HashTable_get(hashTable, value->id);
     if (target == NULL) {
@@ -44,7 +49,7 @@ void HashTable_set(HashTable *hashTable, Value *value) {
 
 int main(int argc, char const* argv[])
 {
-    HashTable *hashTable = (HashTable*)malloc(sizeof(HashTable));
+    HashTable *hashTable = HashTable_new();
     Value *value1 = new_value(0,"hoge"); 
     Value *value2 = new_value(1,"piyo"); 
     Value *value3 = new_value(100,"foo"); 
@@ -54,11 +59,11 @@ int main(int argc, char const* argv[])
     HashTable_set(hashTable, value3);
     // HashTable_set(hashTable, value4);
     Value *result1 = HashTable_get(hashTable, 0);
-    Value *result2 = HashTable_get(hashTable, 1);
+    // Value *result2 = HashTable_get(hashTable, 1);
     printf("%d", result1->id);
-    printf("%s", result1->value);
-    printf("%d", result2->id);
-    printf("%s", result2->value);
+    // printf("%s", result1->value);
+    // printf("%d", result2->id);
+    // printf("%s", result2->value);
     // assert(result->value != NULL);
 
     free(hashTable);
