@@ -66,6 +66,7 @@ class Space < State
     end
 end
 
+
 class Number < State
     def input(c)
         if integer_string?(c) then
@@ -81,14 +82,57 @@ class Number < State
     end
 end
 
+class Node 
+end
+
+class PlusNode < Node
+    attr_reader :children
+    def initialize
+        @children = []
+    end
+
+    def add(node)
+        @children.push(node)
+    end
+
+    def evalu
+        @children.map {|child|
+            child.evalu
+        }.inject(:+)
+    end
+end
+
+class NumberNode < Node
+    attr_reader :value
+    def initialize(value)
+        @value = value
+    end
+
+    def evalu
+        @value.to_i
+    end
+end
+
 sample = "33 +   2222 + 3 + 2222 + 22222"
 next_state = State.new("")
+output_list = []
 sample.each_char do |c|
     result = next_state.input(c)
     state = result[0]
     next_state = result[1]
     if state
-        p state
+        output_list.push(state)
     end
 end
-p next_state
+output_list.push(next_state)
+
+abstract_syntax_tree = nil
+output_list.each do |output|
+    p output.state
+end
+
+
+sample_node = PlusNode.new()
+sample_node.add(NumberNode.new("2"))
+sample_node.add(NumberNode.new("3"))
+p sample_node.evalu
