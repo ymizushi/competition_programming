@@ -1,12 +1,28 @@
 #!/usr/bin/env ruby
 require 'minitest/autorun'
 #
-class Solver1
-    def self.solve(target_list, k)
-        self.local_solve(0,0, target_list, k)
+class Block
+    attr_accessor :group_number
+
+    def filled?
+        return @is_filled
     end
 
-    def self.local_solve index, sum, target_list, k
+    def initialize(is_filled, group_number)
+        @is_filled = is_filled
+        @group_number = group_number
+    end
+end
+
+
+class LakeCountingSolver
+    def initialize(width, height)
+        for i in 0..width
+        end
+        @blocks = new 
+    end
+
+    def solve
         num = target_list[index]
         if num+sum == k then
             true
@@ -20,6 +36,7 @@ class Solver1
             false
         end
     end
+
 end
 
 class TestSolver1 < MiniTest::Unit::TestCase
@@ -28,3 +45,4 @@ class TestSolver1 < MiniTest::Unit::TestCase
     assert_equal false, Solver1.solve([1,2,11], 15)
   end
 end
+
