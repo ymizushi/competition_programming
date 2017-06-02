@@ -8,8 +8,8 @@ end
 
 
 def bubble(l)
-    l.each_with_index {|v, i|
-        l.slice(i, l.length).each_with_index {|value, index|
+    l.each_index {|i|
+        l.slice(i, l.length).each_index {|index|
             a = l[index]
             b = l[index+1]
             if b != nil 
@@ -22,4 +22,4 @@ def bubble(l)
     l
 end
 
-p bubble([10,4,2,4,5,6])
+p bubble([10,4,2,4,5,6, 1, 5,6])
