@@ -1,4 +1,4 @@
-fn partial_sum(index: usize, sum: i32, target_list: &[i32], k: i32) -> bool {
+pub fn partial_sum(index: usize, sum: i32, target_list: &[i32], k: i32) -> bool {
     let target = target_list[index];
     if target+sum == k {
         return true;
@@ -13,8 +13,13 @@ fn partial_sum(index: usize, sum: i32, target_list: &[i32], k: i32) -> bool {
     }
 }
 
-fn main() {
-    println!("result: {}\n", partial_sum(0, 0, &[1, 2, 4, 7], 13));
-    println!("result: {}\n", partial_sum(0, 0, &[1, 2, 4, 7], 15));
-}
+#[cfg(test)]
+mod tests {
+    use super::partial_sum;
+    #[test]
 
+    fn assert_partial_sum() {
+        assert_eq!(true, partial_sum(0, 0, &[1, 2, 4, 7], 13));
+        assert_eq!(false, partial_sum(0, 0, &[1, 2, 4, 7], 15));
+    }
+}

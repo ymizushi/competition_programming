@@ -1,0 +1,6 @@
+[package]
+name = "partial_sum"
+version = "0.1.0"
+authors = ["ymizushi <mizushi@gmail.com>"]
+
+[dependencies]
