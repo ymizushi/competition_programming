@@ -5,7 +5,7 @@ object P19 {
   }
 
   def rotate[A](n: Int, l: List[A]): List[A] = {
-    def innerRotate[A](count: Int, archived: List[A], rest: List[A]): List[A] = {
+    def innerRotate(count: Int, archived: List[A], rest: List[A]): List[A] = {
       val index = if (count == n) n else l.length + n
       if (count == index) {
         rest ++ archived

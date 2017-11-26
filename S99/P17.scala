@@ -4,7 +4,7 @@ object P17 {
   }
 
   def split[A](n: Int, l: List[A]): (List[A], List[A]) = {
-    def innerSplit[A](n: Int, archieved: List[A], rest: List[A]): (List[A], List[A]) = {
+    def innerSplit(n: Int, archieved: List[A], rest: List[A]): (List[A], List[A]) = {
       n match {
         case 0 => (archieved, rest)
         case _ => innerSplit(n-1, archieved :+ rest.head, rest.tail)

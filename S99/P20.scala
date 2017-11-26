@@ -4,7 +4,7 @@ object P20 {
   }
 
   def removeAt[A](n: Int, l: List[A]): (List[A], A) = {
-    def innerRemoveAt[A](count: Int, archived: List[A], rest: List[A]): (List[A], A) = {
+    def innerRemoveAt(count: Int, archived: List[A], rest: List[A]): (List[A], A) = {
       if (count == n) {
         (archived ++ rest.tail, rest.head)
       } else {
