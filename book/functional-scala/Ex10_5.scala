@@ -1,4 +1,5 @@
 object Ex10_5 {
+  // RETRY:
   def main(args: Array[String]): Unit = {
     print(foldMap[Int, String](List(1, 2, 3, 4), StringMonoid)("hoge" + _.toString))
     Unit
@@ -12,13 +13,14 @@ object Ex10_5 {
     // 別解: as.foldLeft(m.zero)((b, a) => m.op(b, f(a)))
   }
 
-  def foldLeft[A, B](as: List[A])(zero: B)(f: (B, A) => B): B = {
-    foldMap(as, dual(endoMonoid[B]))(a => b => f(b, a))(zero) // notice
-  }
+  // TODO
+  // def foldLeft[A, B](as: List[A])(zero: B)(f: (B, A) => B): B = {
+  //   foldMap(as, dual(endoMonoid[B]))(a => b => f(b, a))(zero) // notice
+  // }
 
-  def foldRight[A, B](as: List[A])(z: B)(f: (A, B) => B): B = {
-    foldMap(as, dual(endoMonoid[B]))(a => b => f(b, a))(z) // notice
-  }
+  // def foldRight[A, B](as: List[A])(z: B)(f: (A, B) => B): B = {
+  //   foldMap(as, dual(endoMonoid[B]))(a => b => f(b, a))(z) // notice
+  // }
 }
 
 trait Monoid[A] {
