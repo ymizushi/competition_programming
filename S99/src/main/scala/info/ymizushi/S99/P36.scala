@@ -1,24 +1,23 @@
+package info.ymizushi.S99
+
 object P36 {
-  implicit class AddIntTo(n: Int) {
-    def primeFactors: List[Int] = {
-      def innerPrimeFactors(in: Int, divider: Int, archived: List[Int]): List[Int] = {
-        if (divider == n) {
-          archived
-        } else if (in % divider == 0) {
-          innerPrimeFactors(in/divider, divider, archived:+divider)
-        } else {
-          innerPrimeFactors(in, divider+1, archived)
-        }
-      }
-      innerPrimeFactors(n, 2, List[Int]())
-    }
+  implicit class AddInt(n: Int) {
+    import P35.AddIntTo
 
     def primeFactorMultiplicity: List[(Int, Int)] = {
-      List((1,2))
+      def primeTuple(current: Int, archived: List[(Int, Int)], rest: List[Int], count: Int): List[(Int, Int)] = {
+        if (rest.isEmpty) {
+          val last = (current, count)
+          archived:+last
+        } else if (current == rest.head) {
+          primeTuple(rest.head, archived, rest.tail, count+1)
+        } else {
+          val t = (current, count)
+          primeTuple(rest.head, archived:+t, rest.tail, 1)
+        }
+      }
+      val f = n.primeFactors
+      primeTuple(f.head, List.empty[(Int,Int)], f.tail, 1)
     }
-  }
-
-  def main(args: Array[String]) = {
-    println(10.primeFactorMultiplicity)
   }
 }

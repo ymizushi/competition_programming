@@ -1,3 +1,5 @@
+package info.ymizushi.S99
+
 object P35 {
   implicit class AddIntTo(n: Int) {
     def primeFactors: List[Int] = {
