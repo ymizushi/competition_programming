@@ -1,4 +1,34 @@
 object Ex10 {
+  def main(args: Array[String]) = {
+    implicit val stringMonoid: Monoid[String] = StringMonoid
+    println(foldMapV(Vector("1", "2", "3", "4"))(before => before))
+
+    val endoMonoid= new EndoMonoid[Int]()
+    println(endoMonoid.op((x:Int) => x+x, (y: Int) => y+y))
+
+    val optionMonoid= new OptionMonoid[Int]()
+    println(optionMonoid.op(Some(1), None))
+    println(optionMonoid.op(Some(1), Some(2)))
+    println(optionMonoid.op(None, Some(2)))
+
+    val intAddition = new IntAdditionMonoid
+    val intMultipication = new IntMultiplicationMonoid
+    println(intAddition.op(4, 8))
+
+    // Exercise 10.6 
+    // RETRY:
+  }
+
+
+  // Exercise 10.5
+  def foldMap[A, B](as: List[A], m: Monoid[B])(f: A => B): B = {
+    as.map(f).foldLeft(m.zero)(m.op)
+    // 別解: as.foldLeft(m.zero)((b, a) => m.op(b, f(a)))
+  }
+
+
+  // Exercise 10.10
+  // FIX:
   val wcMonoid: Monoid[WC] = new Monoid[WC] {
     def zero: WC = Stub("")
 
@@ -12,7 +42,8 @@ object Ex10 {
     }
   }
 
-  // RETRY
+  // Execise 10.11
+  // RETRY:
   // def count(s: String): Int = {
   //   def wc(c: Char): WC = {
   //     if (c.isWhitespace)
@@ -20,35 +51,14 @@ object Ex10 {
   //     else
   //       Stub(c.toString)
   //   }
-
   //   def unstub(s: String) = s.length min 1
-
   //   foldMapV(s.toIndexedSeq, wcMonoid)(wc) match {
   //     case Stub(s) => unstub(s)
   //     case Part(l, w, r) => unstub(l) + w + unstub(r)
   //   }
   // }
 
-
-  def main(args: Array[String]) = {
-    implicit val stringMonoid: Monoid[String] = StringMonoid
-    println(foldMapV(Vector("1", "2", "3", "4"))(before => before))
-
-
-    val endoMonoid= new EndoMonoid[Int]()
-    println(endoMonoid.op((x:Int) => x+x, (y: Int) => y+y))
-
-
-    val optionMonoid= new OptionMonoid[Int]()
-    println(optionMonoid.op(Some(1), None))
-    println(optionMonoid.op(Some(1), Some(2)))
-    println(optionMonoid.op(None, Some(2)))
-
-    val intAddition = new IntAdditionMonoid
-    val intMultipication = new IntMultiplicationMonoid
-    println(intAddition.op(4, 8))
-  }
-
+  // Exercise 10.7
   // RETRY:
   def foldMapV[A, B](as: IndexedSeq[A])(f: A => B)(implicit m: Monoid[B]): B = {
     if (as.length == 0)
@@ -59,10 +69,15 @@ object Ex10 {
       val (l, r) = as.splitAt(as.length / 2)
       m.op(foldMapV(l)(f), foldMapV(r)(f))
     }
-
   }
 
+
+  // Exercise 10.8 
   // RETRY:
+
+  // Exercise 10.9 
+  // RETRY:
+  
   // def main(args: Array[String]): Unit = {
   //   print(foldMap[Int, String](List(1, 2, 3, 4), StringMonoid)("hoge" + _.toString))
   //   Unit
@@ -70,20 +85,6 @@ object Ex10 {
 
   // def concatenate[A](as: List[A], m: Monoid[A]): A =
   //   as.foldLeft(m.zero)(m.op(_, _))
-
-  // def foldMap[A, B](as: List[A], m: Monoid[B])(f: A => B): B = {
-  //   as.map(f).foldLeft(m.zero)(m.op)
-  //   // 別解: as.foldLeft(m.zero)((b, a) => m.op(b, f(a)))
-  // }
-
-  // TODO
-  // def foldLeft[A, B](as: List[A])(zero: B)(f: (B, A) => B): B = {
-  //   foldMap(as, dual(endoMonoid[B]))(a => b => f(b, a))(zero) // notice
-  // }
-
-  // def foldRight[A, B](as: List[A])(z: B)(f: (A, B) => B): B = {
-  //   foldMap(as, dual(endoMonoid[B]))(a => b => f(b, a))(z) // notice
-  // }
 }
 
 trait Monoid[A] {
@@ -101,24 +102,6 @@ object StringMonoid extends Monoid[String] {
   def zero: String = ""
 }
 
-// trait MonoidLaws {
-//   def monoidLaws[A](m: Monoid[A], gen: Gen[A]): Prop
-// }
-
-class EndoMonoid[A] extends Monoid[A => A] {
-  def op(a1: A => A, a2: A => A): A => A
-    = a1 compose a2
-
-  def zero = (x: A) => x
-}
-
-class OptionMonoid[A] extends Monoid[Option[A]] {
-  def op(a1: Option[A], a2: Option[A]): Option[A]
-    = a1 orElse a2
-
-  def zero = None
-}
-
 sealed trait WC {
   def wc: Int
 
@@ -131,6 +114,7 @@ case class Part(lStub: String, words: Int, rStub: String) extends WC {
 }
 
 
+// Excercise 10.1
 class IntAdditionMonoid extends Monoid[Int] {
   def op(a1: Int, a2: Int): Int =
     a1 + a2
@@ -158,3 +142,27 @@ class BooleanAndMonoid extends Monoid[Boolean] {
 
   def zero = true
 }
+
+// Exercise 10.2
+class OptionMonoid[A] extends Monoid[Option[A]] {
+  def op(a1: Option[A], a2: Option[A]): Option[A]
+    = a1 orElse a2
+
+  def zero = None
+}
+
+// Exercise 10.3
+class EndoMonoid[A] extends Monoid[A => A] {
+  def op(a1: A => A, a2: A => A): A => A
+    = a1 compose a2
+
+  def zero = (x: A) => x
+}
+
+// Exercise 10.4
+// RETRY:
+// trait MonoidLaws {
+//   def monoidLaws[A](m: Monoid[A], gen: Gen[A]): Prop
+// }
+
+// Exercise 10.5
