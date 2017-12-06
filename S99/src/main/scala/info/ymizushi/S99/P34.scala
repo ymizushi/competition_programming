@@ -1,3 +1,5 @@
+package info.ymizushi.S99
+
 object P34 {
   implicit class AddIntTo(n: Int) {
     def totient: Int = {
@@ -18,12 +20,8 @@ object P34 {
       }.last
     }
 
-  def commonMultiple(n: Int): List[Int] = {
-    (1 to n).toList.filter(e => n % e  == 0)
-  }
-  }
-
-  def main(args: Array[String]) = {
-    println(10.totient)
+    def commonMultiple(n: Int): List[Int] = {
+      (1 to n).toList.filter(e => n % e  == 0)
+    }
   }
 }
