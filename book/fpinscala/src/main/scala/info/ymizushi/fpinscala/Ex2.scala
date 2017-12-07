@@ -74,3 +74,36 @@ object Ex2 {
   def compose[A, B, C](f: B => C, g: A => B): A => C = (a:A) => f(g(a))
 }
 
+
+sealed trait MyOption[+A] {
+  def isDefined: Boolean
+  def map[B](f: A => B): MyOption[B]
+  def flatMap[B](f: A => MyOption[B]): MyOption[B]
+  def get: A
+}
+
+case class MySome[+A](value: A) extends MyOption[A] {
+  def isDefined: Boolean = true
+
+  def map[B](f: A => B): MyOption[B] = {
+    MySome(f(value))
+  }
+
+  def get: A =  value
+
+  def flatMap[B](f: A => MyOption[B]): MyOption[B] = {
+    val v = f(value)
+    if (v.isDefined) 
+      MySome(v.get)
+    else MyNone
+  }
+}
+
+case object MyNone extends MyOption[Nothing] {
+  def isDefined: Boolean = false
+  def map[B](f: Nothing => B): MyOption[B] = MyNone
+  def get: Nothing =  throw new Exception("error")
+  def flatMap[B](f: Nothing => MyOption[B]): MyOption[B] = {
+    MyNone
+  }
+}
