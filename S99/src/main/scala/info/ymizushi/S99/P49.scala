@@ -1,11 +1,7 @@
 object P49 {
   def gray(n: Int)(implicit cache: scala.collection.mutable.Map[Int, List[String]]): List[String] = {
-    def get(n: Int): List[String] = {
-      List(0,1).map {
-        case 0 => gray(n-1).map("0" + _ )
-        case 1 => gray(n-1).reverse.map("1" + _ )
-      }.flatten
-    }
+    def get(n: Int): List[String] = gray(n-1).map("0" + _ ) ++ gray(n-1).reverse.map("1" + _ )
+    
     n match {
       case 1 => List("0", "1")
       case _ => cache.getOrElseUpdate(n, get(n))
