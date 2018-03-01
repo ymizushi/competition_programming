@@ -107,3 +107,9 @@ case object MyNone extends MyOption[Nothing] {
     MyNone
   }
 }
+
+sealed trait LinkedList[+A] {
+}
+
+case class Nil extends LinkedList[Nothing]
+case class Cell(head: A, tail: LinkedList[A]) extends LinkedList[A]

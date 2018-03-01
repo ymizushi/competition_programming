@@ -25,3 +25,15 @@ object P46 {
   }
 }
 
+  def main(args: Array[String]) = {
+  }
+
+  def and(a: Boolean, b: Boolean): Boolean = a && b
+
+  def or(a: Boolean, b: Boolean): Boolean = a || b
+
+  def xor(a: Boolean, b: Boolean): Boolean = a != b
+
+  def table2(f: (Boolean, Boolean) => Boolean): Unit = {
+  }
+}
