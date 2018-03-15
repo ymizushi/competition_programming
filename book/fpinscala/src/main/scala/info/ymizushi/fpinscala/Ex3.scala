@@ -2,6 +2,10 @@ object Ex3 {
   sealed trait List[+A]
   case object Nil extends List[Nothing]
   case class Cons[+A](head: A, tail: List[A]) extends List[A] {
+    def add(e: A): List[A] = {
+      
+
+    }
   }
 
   object List {
@@ -53,6 +57,23 @@ object Ex3 {
       }
       innerDropWhile(l, f, l)
     }
+
+    def init[A](l: List[A]) = {
+      reverse(l).tail.reverse
+    }
+
+    def reverse[A](l: List[A]): List[A] = {
+      l match {
+        case Nil => Nil
+        case Cons(head, tail) => addLast(reverse(tail), head)
+      }
+    }
+
+    def addLast[A](l: List[A], e: A): List[A] =
+      l match {
+        case Cons(head, Nil) => Cons(head, Cons(e, Nil)
+        case Cons(head, tail) => Cons(head, addLst(tail, e)
+      }
   }
 
   def main(args: Array[String]) = {
@@ -86,5 +107,7 @@ object Ex3 {
     println(List.dropWhile(List(1, 2, 3, 3), (n:Int) =>  n == 2))
     println(List.dropWhile(List(1, 2, 3, 3, 4, 4, 3), (n:Int) =>  n == 4))
     println(List.dropWhile(List(1, 2, 3, 3, 4, 4, 3), (n:Int) =>  n == 10))
+
+    println(List.init(List(1, 2, 3, 3, 4, 4, 3)))
   }
 }
