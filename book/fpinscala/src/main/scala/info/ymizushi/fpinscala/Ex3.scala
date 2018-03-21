@@ -9,6 +9,13 @@ object Ex3 {
   }
 
   object List {
+
+    def foldRight[A, B](as: List[A], z: B)(f: (A, B) => B):  B= {
+      as match {
+        case Nil => z
+        case Cons(head, tail) => f(head, foldRight(tail, z)(f))
+      }
+    }
     
     def sum(ints: List[Int]): Int = ints match {
       case Nil => 0
@@ -58,25 +65,40 @@ object Ex3 {
       innerDropWhile(l, f, l)
     }
 
-    def init[A](l: List[A]) = {
-      reverse(l).tail.reverse
-    }
+    // def init[A](l: List[A]) = {
+    //   reverse(l).tail.reverse
+    // }
 
-    def reverse[A](l: List[A]): List[A] = {
-      l match {
-        case Nil => Nil
-        case Cons(head, tail) => addLast(reverse(tail), head)
+    // def reverse[A](l: List[A]): List[A] = {
+    //   l match {
+    //     case Nil => Nil
+    //     case Cons(head, tail) => addLast(reverse(tail), head)
+    //   }
+    // }
+
+    // def addLast[A](l: List[A], e: A): List[A] =
+    //   l match {
+    //     case Cons(head, Nil) => Cons(head, Cons(e, Nil)
+    //     case Cons(head, tail) => Cons(head, addLst(tail, e)
+    //   }
+    
+    def length[A](as: List[A]): Int = {
+      as match {
+        case Nil => 0
+        case Cons(head, tail) => 1 + length(tail)
       }
     }
 
-    def addLast[A](l: List[A], e: A): List[A] =
-      l match {
-        case Cons(head, Nil) => Cons(head, Cons(e, Nil)
-        case Cons(head, tail) => Cons(head, addLst(tail, e)
+    def foldLeft[A, B](as: List[A], z: B)(f: (B, A) => B): B = {
+      as match {
+        case Nil => z
+        case Cons(head, tail) => f(foldLeft(tail, z)(f), head)
       }
+    }
+
   }
 
-  def main(args: Array[String]) = {
+  def main(args: Array[String]):Unit = {
     // EXERCISE3.1
     val x = List(1, 2, 3, 4, 5) match {
       case Cons(x, Cons(2, Cons(4, _))) => x // 実行されない
@@ -108,6 +130,19 @@ object Ex3 {
     println(List.dropWhile(List(1, 2, 3, 3, 4, 4, 3), (n:Int) =>  n == 4))
     println(List.dropWhile(List(1, 2, 3, 3, 4, 4, 3), (n:Int) =>  n == 10))
 
-    println(List.init(List(1, 2, 3, 3, 4, 4, 3)))
+    // EXERCISE 3.7
+    // 返せない
+    
+    // Exercise 3.8
+    // 同じListが返る
+    // TOOD: Listのデータコンストラクタとの関係性??
+    
+    // Exercise 3.9
+    println(List.length(List(1, 2, 3, 3, 4, 4, 3)))
+
+    // Excercise 3.10
+    val f =  (acc: Int, x: Int) => {acc + x}
+    println(List.foldLeft(List(1, 2, 3, 3, 4, 4, 3), 0)(_ + _))
+    Unit
   }
 }
