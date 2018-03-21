@@ -1,12 +1,7 @@
 object Ex3 {
   sealed trait List[+A]
   case object Nil extends List[Nothing]
-  case class Cons[+A](head: A, tail: List[A]) extends List[A] {
-    def add(e: A): List[A] = {
-      
-
-    }
-  }
+  case class Cons[+A](head: A, tail: List[A]) extends List[A]
 
   object List {
 
@@ -65,23 +60,18 @@ object Ex3 {
       innerDropWhile(l, f, l)
     }
 
-    // def init[A](l: List[A]) = {
-    //   reverse(l).tail.reverse
-    // }
+    def sumLeft(as:List[Int]): Int = {
+      foldLeft(as, 0)(_ + _)
+    }
 
-    // def reverse[A](l: List[A]): List[A] = {
-    //   l match {
-    //     case Nil => Nil
-    //     case Cons(head, tail) => addLast(reverse(tail), head)
-    //   }
-    // }
+    def productLeft(as:List[Int]): Int = {
+      foldLeft(as, 1)(_ * _)
+    }
 
-    // def addLast[A](l: List[A], e: A): List[A] =
-    //   l match {
-    //     case Cons(head, Nil) => Cons(head, Cons(e, Nil)
-    //     case Cons(head, tail) => Cons(head, addLst(tail, e)
-    //   }
-    
+    def lengthLeft[A](as:List[A]): Int = {
+      foldLeft(as, 0)((acc: Int, x: A) => 1 + acc)
+    }
+
     def length[A](as: List[A]): Int = {
       as match {
         case Nil => 0
@@ -143,6 +133,15 @@ object Ex3 {
     // Excercise 3.10
     val f =  (acc: Int, x: Int) => {acc + x}
     println(List.foldLeft(List(1, 2, 3, 3, 4, 4, 3), 0)(_ + _))
+
+    // Excercise 3.11
+    println(List.sumLeft(List(1, 2, 3, 3, 4, 4, 3)))
+    println(List.productLeft(List(1, 2, 3, 3, 4, 4, 3)))
+    println(List.lengthLeft(List(1, 2, 3, 3, 4, 4, 3)))
+
+    // Excercise 3.12
+    println(List.sumLeft(List(1, 2, 3, 3, 4, 4, 3)))
+
     Unit
   }
 }
