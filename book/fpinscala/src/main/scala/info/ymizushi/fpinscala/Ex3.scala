@@ -1,7 +1,17 @@
 object Ex3 {
-  sealed trait List[+A]
-  case object Nil extends List[Nothing]
-  case class Cons[+A](head: A, tail: List[A]) extends List[A]
+  sealed trait List[+A] {
+    def map[B](f: A => B): List[B]
+  }
+  case object Nil extends List[Nothing] {
+    def map[B](f: Nothing => B): List[B] = {
+      Nil
+    }
+  }
+  case class Cons[+A](head: A, tail: List[A]) extends List[A] {
+    def map[B](f: A => B): List[B] = {
+      Cons(f(head), tail.map(f))
+    }
+  }
 
   object List {
 
@@ -16,6 +26,7 @@ object Ex3 {
       case Nil => 0
       case Cons(x, xs) => x + sum(xs)
     }
+
 
     def product(ds: List[Double]): Double = ds match {
       case Nil => 1.0
@@ -82,10 +93,25 @@ object Ex3 {
     def foldLeft[A, B](as: List[A], z: B)(f: (B, A) => B): B = {
       as match {
         case Nil => z
-        case Cons(head, tail) => f(foldLeft(tail, z)(f), head)
+        case Cons(head, tail) => foldLeft(tail, f(z, head))(f)
       }
     }
 
+    def reverse[A](as: List[A]): List[A] = {
+      foldLeft(as, Nil: List[A])((acc: List[A], x: A) => Cons(x, acc))
+    }
+
+    def append[A](as: List[A], e: A): List[A] = {
+      foldRight(as, Cons(e, Nil))(Cons(_, _))
+    }
+
+    def mapInc(as: List[Int]): List[Int] = {
+      as.map(_ + 1)
+    }
+
+    def mapDoubleToString(as: List[Double]): List[String] = {
+      as.map(_.toString)
+    }
   }
 
   def main(args: Array[String]):Unit = {
@@ -140,7 +166,25 @@ object Ex3 {
     println(List.lengthLeft(List(1, 2, 3, 3, 4, 4, 3)))
 
     // Excercise 3.12
-    println(List.sumLeft(List(1, 2, 3, 3, 4, 4, 3)))
+    println(List.reverse(List(1, 2, 3, 3, 4, 4, 3)))
+
+    // Excercise 3.13
+    // TODO
+
+    // Excercise 3.14
+    println(List.append(List(1, 2, 3, 3, 4, 4, 3), 5))
+
+    // Excercise 3.14
+    // TODO
+
+    // Excercise 3.15
+    println(List.append(List(1, 2, 3, 3, 4, 4, 3), 5))
+
+    // Excercise 3.16
+    // Excercise 3.17
+    // Excercise 3.18
+    println(List.mapInc(List(1, 2, 3, 3, 4, 4, 3)))
+    println(List.mapDoubleToString(List(1, 2, 3, 3, 4, 4, 3)))
 
     Unit
   }
