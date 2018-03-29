@@ -97,12 +97,18 @@ object Ex3 {
       }
     }
 
-    def reverse[A](as: List[A]): List[A] = {
+    def reverse[A](as: List[A]): List[A] = {1
       foldLeft(as, Nil: List[A])((acc: List[A], x: A) => Cons(x, acc))
     }
 
     def append[A](as: List[A], e: A): List[A] = {
       foldRight(as, Cons(e, Nil))(Cons(_, _))
+    }
+    
+    def flatten[A](as: List[A]*): List[A] = {
+       as.foldRight(as, Nil)((x, acc) => {
+         foldRight(x, acc)(Cons(x, acc))
+       }
     }
 
     def mapInc(as: List[Int]): List[Int] = {
