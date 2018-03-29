@@ -97,7 +97,7 @@ object Ex3 {
       }
     }
 
-    def reverse[A](as: List[A]): List[A] = {1
+    def reverse[A](as: List[A]): List[A] = {
       foldLeft(as, Nil: List[A])((acc: List[A], x: A) => Cons(x, acc))
     }
 
@@ -105,10 +105,9 @@ object Ex3 {
       foldRight(as, Cons(e, Nil))(Cons(_, _))
     }
     
-    def flatten[A](as: List[A]*): List[A] = {
-       as.foldRight(as, Nil)((x, acc) => {
-         foldRight(x, acc)(Cons(x, acc))
-       }
+    def flatten[A](as: List[List[A]]): List[A] = {
+       foldRight(as, Nil: List[A])((x: List[A], acc: List[A]) => 
+         foldRight(x, acc)((x2: A, acc2: List[A]) => Cons(x2, acc2)))
     }
 
     def mapInc(as: List[Int]): List[Int] = {
@@ -180,11 +179,9 @@ object Ex3 {
     // Excercise 3.14
     println(List.append(List(1, 2, 3, 3, 4, 4, 3), 5))
 
-    // Excercise 3.14
-    // TODO
-
     // Excercise 3.15
-    println(List.append(List(1, 2, 3, 3, 4, 4, 3), 5))
+    println(List.flatten(List(List(1, 2, 3), List(4, 5, 6), List(7,8,9))))
+
 
     // Excercise 3.16
     // Excercise 3.17
