@@ -2,6 +2,15 @@ double x y = x * 2 + y * 2
 
 
 equal x y = if x ==  y then True else  False
+boomBangs xs = [ if x < 10 then "Boom!" else "BANG!" | x <- xs, odd x]
+
+-- 直角三角形を見つける
+is_triangle a b c = 
+  if a <= 10 && b <= 10 && c <= 10 && a+b+c == 24 then
+    True
+  else
+    False
+
 
 main = do
   -- let lostNumbers = [4, 8, 15, 16, 23, 42]
@@ -26,7 +35,10 @@ main = do
   print $ [x*2 | x <- [1..10]]
   print $ [x*2 | x <- [1..10], x*2 >= 12]
   print $ [x | x <- [50..100], x `mod` 7 == 3]
-
- for {
-   x <- (50 to 100) if 7 % 3 == 0
- })
+  print $ boomBangs [1, 2, 3, 4]
+  print $ [x+y | x <- [1, 2, 3], y <- [10, 100, 1000]]
+  print $ is_triangle 6 9 10
+  let tripes = [ (a, b, c) | c <- [1 .. 10], a <- [1 .. 10], b <- [1..10]]
+  -- print $ tripes
+  let rightTriangles = [ (a, b, c) | c <- [1 .. 10], a <- [1 .. c], b <- [1..a], a^2 + b^2 == c^2]
+  print $ rightTriangles
