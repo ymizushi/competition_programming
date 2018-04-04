@@ -4,6 +4,17 @@ double x y = x * 2 + y * 2
 equal x y = if x ==  y then True else  False
 boomBangs xs = [ if x < 10 then "Boom!" else "BANG!" | x <- xs, odd x]
 
+addThree :: Int -> Int -> Int -> Int
+addThree x y z = x + y + z
+
+class Testable a where
+    test :: a -> String
+ 
+instance Testable Int where
+    test n =
+       if n == 0 then "0"
+       else "1"
+
 -- 直角三角形を見つける
 is_triangle a b c = 
   if a <= 10 && b <= 10 && c <= 10 && a+b+c == 24 then
@@ -42,3 +53,5 @@ main = do
   -- print $ tripes
   let rightTriangles = [ (a, b, c) | c <- [1 .. 10], a <- [1 .. c], b <- [1..a], a^2 + b^2 == c^2]
   print $ rightTriangles
+  
+  
