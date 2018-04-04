@@ -23,6 +23,10 @@ is_triangle a b c =
   else
     False
 
+hello :: Int -> String
+hello x =
+    hoge x
+
 
 main = do
   -- let lostNumbers = [4, 8, 15, 16, 23, 42]
@@ -53,5 +57,6 @@ main = do
   let tripes = [ (a, b, c) | c <- [1 .. 10], a <- [1 .. 10], b <- [1..10]]
   let rightTriangles = [ (a, b, c) | c <- [1 .. 10], a <- [1 .. c], b <- [1..a], a^2 + b^2 == c^2]
   print $ rightTriangles
+  print $ hello 10
   
   
