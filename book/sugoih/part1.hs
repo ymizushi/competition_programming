@@ -8,12 +8,13 @@ addThree :: Int -> Int -> Int -> Int
 addThree x y z = x + y + z
 
 class Testable a where
-    test :: a -> String
+    hoge :: a -> String
  
 instance Testable Int where
-    test n =
+    hoge n =
        if n == 0 then "0"
        else "1"
+
 
 -- 直角三角形を見つける
 is_triangle a b c = 
@@ -50,7 +51,6 @@ main = do
   print $ [x+y | x <- [1, 2, 3], y <- [10, 100, 1000]]
   print $ is_triangle 6 9 10
   let tripes = [ (a, b, c) | c <- [1 .. 10], a <- [1 .. 10], b <- [1..10]]
-  -- print $ tripes
   let rightTriangles = [ (a, b, c) | c <- [1 .. 10], a <- [1 .. c], b <- [1..a], a^2 + b^2 == c^2]
   print $ rightTriangles
   
