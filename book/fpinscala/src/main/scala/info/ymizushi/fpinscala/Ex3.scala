@@ -1,16 +1,30 @@
 object Ex3 {
   sealed trait List[+A] {
     def map[B](f: A => B): List[B]
+    def flatMap[B](f: A => List[B]): List[B]
+    def filter(f: A => Boolean): List[A]
   }
+
   case object Nil extends List[Nothing] {
     def map[B](f: Nothing => B): List[B] = {
       Nil
     }
+
+    def flatMap[B](f: Nothing => List[B]): List[B] = 
+      Nil
+
+    def filter(f: A => Boolean): List[A] =
+      Nil
+
   }
+
   case class Cons[+A](head: A, tail: List[A]) extends List[A] {
     def map[B](f: A => B): List[B] = {
       Cons(f(head), tail.map(f))
     }
+    def flatMap[B](f: A => List[B]): List[B] = {
+      List.flatten(Cons(f(head), tail.map(f)))
+    } 
   }
 
   object List {
@@ -60,6 +74,16 @@ object Ex3 {
       }
     }
 
+    def filter[A](as: List[A])(f: A => Boolean): List[A] =
+      as match {
+        case Cons(head, tail) => {
+          if (f(head)) 
+            Cons(head, filter(tail)(f))
+          else
+            filter(tail)(f)
+        }
+        case Nil => Nil
+      }
 
     def dropWhile[A](l: List[A], f: A => Boolean): List[A] = {
       def innerDropWhile(l: List[A], f: A => Boolean, original: List[A]): List[A] = {
@@ -188,6 +212,15 @@ object Ex3 {
     // Excercise 3.18
     println(List.mapInc(List(1, 2, 3, 3, 4, 4, 3)))
     println(List.mapDoubleToString(List(1, 2, 3, 3, 4, 4, 3)))
+
+    // Excercise 3.19
+    assert(List.filter(List(1, 2, 3, 3, 4, 4, 3))(x => x % 2 == 0) == List(2, 4, 4), "3.21 failed")
+
+    // Excercise 3.20
+    assert(List(1, 2, 3).flatMap { (x: Int) => List(x, x)} == List(1, 1, 2, 2, 3, 3))
+
+    // Excercise 3.21
+    assert(List(1, 2, 3).filter(_ % 2 == 0) == List(2))
 
     Unit
   }
