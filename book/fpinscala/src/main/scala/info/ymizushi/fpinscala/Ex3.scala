@@ -13,7 +13,7 @@ object Ex3 {
     def flatMap[B](f: Nothing => List[B]): List[B] = 
       Nil
 
-    def filter(f: A => Boolean): List[A] =
+    def kilter(f: A => Boolean): List[A] =
       Nil
 
   }
@@ -25,6 +25,8 @@ object Ex3 {
     def flatMap[B](f: A => List[B]): List[B] = {
       List.flatten(Cons(f(head), tail.map(f)))
     } 
+
+
   }
 
   object List {
@@ -84,6 +86,14 @@ object Ex3 {
         }
         case Nil => Nil
       }
+
+    def filter2[A](as: List[A])(f: A => Boolean): List[A] = 
+      def localF(f: A => Boolean): A => List[B] =
+        if(f(head))
+          head => List(head)
+        else
+          head => Nil
+      flatMap(as)(x => if(localF(f)) List(x) else Nil
 
     def dropWhile[A](l: List[A], f: A => Boolean): List[A] = {
       def innerDropWhile(l: List[A], f: A => Boolean, original: List[A]): List[A] = {
@@ -221,6 +231,8 @@ object Ex3 {
 
     // Excercise 3.21
     assert(List(1, 2, 3).filter(_ % 2 == 0) == List(2))
+    // Excercise 3.22
+    assert(List(1, 2, 3).filter2(_ % 2 == 0) == List(2))
 
     Unit
   }
