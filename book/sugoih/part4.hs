@@ -55,6 +55,19 @@ quick (x:xs) =
   quick (smallerList x xs) ++ [x] ++ quick (biggerList x xs)
 quick [] = []
 
+quicksort :: (Ord a) => [a] -> [a]
+quicksort [] = []
+quicksort (x:xs) =
+    quicksort smallerOrEqual ++ [x] ++ quicksort larger where
+        smallerOrEqual = [a | a <- xs, a <= x]
+        larger = [a | a <- xs, a > x] 
+  
+multThree :: Int -> Int -> Int -> Int
+multThree x y z = x * y * z
+
+applyTwice :: (a -> a) -> a -> a
+applyTwice f x = f (f x)
+
 main = do
  -- print $ bmiTell 40.0
  print $ maximum' [10, 20, 15]
@@ -62,3 +75,4 @@ main = do
  print $ zip [1, 2, 3] [4, 5, 6]
  print $ elem 10 [10, 0, 20, 30]
  print $ quick [10, 0, 20, 30, 35, 20, 11] 
+ print (multThree 3 5 9)
