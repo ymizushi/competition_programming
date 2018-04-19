@@ -21,6 +21,13 @@ largestDivisible :: Integer
 largestDivisible = head (filter p [10000, 9999..])
   where p x = x `mod` 3829 == 0
 
+oddSquareSum :: Integer
+oddSquareSum = sum (takeWhile (<10000) (filter odd (map (^2) [1..])))
+
+oddSquareSum :: Integer
+oddSquareSum = sum . takeWhile (<10000) . filter odd $ map (^2) [1..]
+
 main = do
  print $ filter (>3) [1, 5, 3, 2, 1, 6, 4, 3, 2, 1]
  print $ largestDivisible
+ print $ oddSquareSum

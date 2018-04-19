@@ -37,12 +37,15 @@ object Ex3 {
         case Cons(head, tail) => f(head, foldRight(tail, z)(f))
       }
     }
+
+    def foldRight2[A, B](as: List[A], z: B)(f: (A, B) => B):  B= {
+      
+    }
     
     def sum(ints: List[Int]): Int = ints match {
       case Nil => 0
       case Cons(x, xs) => x + sum(xs)
     }
-
 
     def product(ds: List[Double]): Double = ds match {
       case Nil => 1.0
