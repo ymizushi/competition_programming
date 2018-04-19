@@ -1,21 +1,15 @@
 object Ex3 {
   sealed trait List[+A] {
     def map[B](f: A => B): List[B]
-    def flatMap[B](f: A => List[B]): List[B]
-    def filter(f: A => Boolean): List[A]
+    // def flatMap[B](f: A => List[B]): List[B]
+    // def filter(f: A => Boolean): List[A]
   }
 
   case object Nil extends List[Nothing] {
     def map[B](f: Nothing => B): List[B] = {
       Nil
     }
-
-    def flatMap[B](f: Nothing => List[B]): List[B] = 
-      Nil
-
-    def kilter(f: A => Boolean): List[A] =
-      Nil
-
+    // def flatMap[B](f: A => List[B]): List[B]
   }
 
   case class Cons[+A](head: A, tail: List[A]) extends List[A] {
@@ -25,8 +19,6 @@ object Ex3 {
     def flatMap[B](f: A => List[B]): List[B] = {
       List.flatten(Cons(f(head), tail.map(f)))
     } 
-
-
   }
 
   object List {
@@ -91,13 +83,13 @@ object Ex3 {
         case Nil => Nil
       }
 
-    def filter2[A](as: List[A])(f: A => Boolean): List[A] = 
-      def localF(f: A => Boolean): A => List[B] =
-        if(f(head))
-          head => List(head)
-        else
-          head => Nil
-      flatMap(as)(x => if(localF(f)) List(x) else Nil
+    // def filter2[A](as: List[A])(f: A => Boolean): List[A] = 
+    //   def localF(f: A => Boolean): A => List[B] =
+    //     if(f(head))
+    //       head => List(head)
+    //     else
+    //       head => Nil
+    //   flatMap(as)(x => if(localF(f)) List(x) else Nil
 
     def dropWhile[A](l: List[A], f: A => Boolean): List[A] = {
       def innerDropWhile(l: List[A], f: A => Boolean, original: List[A]): List[A] = {
@@ -150,6 +142,15 @@ object Ex3 {
 
     def append2[A](as: List[A], e: A): List[A] = {
       foldLeft(List.reverse(as), Cons(e, Nil))((a, b) => Cons(b, a))
+    }
+
+    def zipAdd(las: List[Int], ras: List[Int]): List[Int] = {
+      (las, ras) match {
+        case (Cons(lasHead, lasTail), Cons(rasHead, rasTail)) => Cons(lasHead + rasHead,  zipAdd(lasTail, rasTail))
+        case (Cons(lasHead, lasTail), Nil) => Nil
+        case (Nil, Cons(rasHead, rasTail)) => Nil
+        case _ => Nil
+      }
     }
 
     def mapInc(as: List[Int]): List[Int] = {
@@ -236,12 +237,15 @@ object Ex3 {
     assert(List.filter(List(1, 2, 3, 3, 4, 4, 3))(x => x % 2 == 0) == List(2, 4, 4), "3.21 failed")
 
     // Excercise 3.20
-    assert(List(1, 2, 3).flatMap { (x: Int) => List(x, x)} == List(1, 1, 2, 2, 3, 3))
+    // assert(List(1, 2, 3).flatMap { (x: Int) => List(x, x)} == List(1, 1, 2, 2, 3, 3))
 
     // Excercise 3.21
-    assert(List(1, 2, 3).filter(_ % 2 == 0) == List(2))
+    // assert(List(1, 2, 3).filter(_ % 2 == 0) == List(2))
+    // assert(List(1, 2, 3).filter2(_ % 2 == 0) == List(2))
+    
     // Excercise 3.22
-    assert(List(1, 2, 3).filter2(_ % 2 == 0) == List(2))
+    assert(List.zipAdd(List(1, 2, 3), List(2, 3, 4)) == List(3, 5, 7))
+    
 
     Unit
   }
