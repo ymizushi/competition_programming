@@ -2,34 +2,23 @@ object Ex3 {
   sealed trait List[+A] {
     def map[B](f: A => B): List[B]
     def flatMap[B](f: A => List[B]): List[B]
-    def filter(f: A => Boolean): List[A]
   }
 
   case object Nil extends List[Nothing] {
-    def map[B](f: Nothing => B): List[B] = {
-      Nil
-    }
-
-    def flatMap[B](f: Nothing => List[B]): List[B] = 
-      Nil
-
-    def kilter(f: A => Boolean): List[A] =
-      Nil
-
+    def map[B](f: Nothing => B): List[B] = Nil
+    def flatMap[B](f: Nothing => List[B]): List[B] = Nil
   }
 
   case class Cons[+A](head: A, tail: List[A]) extends List[A] {
-    def map[B](f: A => B): List[B] = {
-      Cons(f(head), tail.map(f))
-    }
-    def flatMap[B](f: A => List[B]): List[B] = {
-      List.flatten(Cons(f(head), tail.map(f)))
-    } 
-
-
+    def map[B](f: A => B): List[B] = Cons(f(head), tail.map(f))
+    def flatMap[B](f: A => List[B]): List[B] = List.flatten(Cons(f(head), tail.map(f)))
   }
 
   object List {
+
+    // def foldRight2[A, B](as: List[A], z: B)(f: (A, B) => B):  B= {
+    //   foldLeft(as.reverse , z)(f)
+    // }
 
     def foldRight[A, B](as: List[A], z: B)(f: (A, B) => B):  B= {
       as match {
@@ -90,13 +79,13 @@ object Ex3 {
         case Nil => Nil
       }
 
-    def filter2[A](as: List[A])(f: A => Boolean): List[A] = 
-      def localF(f: A => Boolean): A => List[B] =
-        if(f(head))
-          head => List(head)
-        else
-          head => Nil
-      flatMap(as)(x => if(localF(f)) List(x) else Nil
+    // def filter2[A](as: List[A])(f: A => Boolean): List[A] = 
+    //   def localF(f: A => Boolean): A => List[B] =
+    //     if(f(head))
+    //       head => List(head)
+    //     else
+    //       head => Nil
+    //   flatMap(as)(x => if(localF(f)) List(x) else Nil
 
     def dropWhile[A](l: List[A], f: A => Boolean): List[A] = {
       def innerDropWhile(l: List[A], f: A => Boolean, original: List[A]): List[A] = {
@@ -145,6 +134,19 @@ object Ex3 {
     def flatten[A](as: List[List[A]]): List[A] = {
        foldRight(as, Nil: List[A])((x: List[A], acc: List[A]) => 
          foldRight(x, acc)((x2: A, acc2: List[A]) => Cons(x2, acc2)))
+    }
+
+    def append2[A](as: List[A], e: A): List[A] = {
+      foldLeft(List.reverse(as), Cons(e, Nil))((a, b) => Cons(b, a))
+    }
+
+    def zipAdd(las: List[Int], ras: List[Int]): List[Int] = {
+      (las, ras) match {
+        case (Cons(lasHead, lasTail), Cons(rasHead, rasTail)) => Cons(lasHead + rasHead,  zipAdd(lasTail, rasTail))
+        case (Cons(lasHead, lasTail), Nil) => Nil
+        case (Nil, Cons(rasHead, rasTail)) => Nil
+        case _ => Nil
+      }
     }
 
     def mapInc(as: List[Int]): List[Int] = {
@@ -218,7 +220,8 @@ object Ex3 {
 
     // Excercise 3.15
     println(List.flatten(List(List(1, 2, 3), List(4, 5, 6), List(7,8,9))))
-
+    println(List.append(List(1, 2, 3, 3, 4, 4, 3), 5))
+    println(List.append2(List(1, 2, 3, 3, 4, 4, 3), 5))
 
     // Excercise 3.16
     // Excercise 3.17
@@ -233,9 +236,12 @@ object Ex3 {
     assert(List(1, 2, 3).flatMap { (x: Int) => List(x, x)} == List(1, 1, 2, 2, 3, 3))
 
     // Excercise 3.21
-    assert(List(1, 2, 3).filter(_ % 2 == 0) == List(2))
+    // assert(List(1, 2, 3).filter(_ % 2 == 0) == List(2))
+    // assert(List(1, 2, 3).filter2(_ % 2 == 0) == List(2))
+    
     // Excercise 3.22
-    assert(List(1, 2, 3).filter2(_ % 2 == 0) == List(2))
+    assert(List.zipAdd(List(1, 2, 3), List(2, 3, 4)) == List(3, 5, 7))
+    
 
     Unit
   }
