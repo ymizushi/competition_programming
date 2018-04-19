@@ -31,6 +31,10 @@ object Ex3 {
 
   object List {
 
+    // def foldRight2[A, B](as: List[A], z: B)(f: (A, B) => B):  B= {
+    //   foldLeft(as.reverse , z)(f)
+    // }
+
     def foldRight[A, B](as: List[A], z: B)(f: (A, B) => B):  B= {
       as match {
         case Nil => z
@@ -144,6 +148,10 @@ object Ex3 {
          foldRight(x, acc)((x2: A, acc2: List[A]) => Cons(x2, acc2)))
     }
 
+    def append2[A](as: List[A], e: A): List[A] = {
+      foldLeft(List.reverse(as), Cons(e, Nil))((a, b) => Cons(b, a))
+    }
+
     def mapInc(as: List[Int]): List[Int] = {
       as.map(_ + 1)
     }
@@ -215,7 +223,8 @@ object Ex3 {
 
     // Excercise 3.15
     println(List.flatten(List(List(1, 2, 3), List(4, 5, 6), List(7,8,9))))
-
+    println(List.append(List(1, 2, 3, 3, 4, 4, 3), 5))
+    println(List.append2(List(1, 2, 3, 3, 4, 4, 3), 5))
 
     // Excercise 3.16
     // Excercise 3.17
