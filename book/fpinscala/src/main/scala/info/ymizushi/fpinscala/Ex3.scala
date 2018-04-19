@@ -1,24 +1,17 @@
 object Ex3 {
   sealed trait List[+A] {
     def map[B](f: A => B): List[B]
-    // def flatMap[B](f: A => List[B]): List[B]
-    // def filter(f: A => Boolean): List[A]
+    def flatMap[B](f: A => List[B]): List[B]
   }
 
   case object Nil extends List[Nothing] {
-    def map[B](f: Nothing => B): List[B] = {
-      Nil
-    }
-    // def flatMap[B](f: A => List[B]): List[B]
+    def map[B](f: Nothing => B): List[B] = Nil
+    def flatMap[B](f: Nothing => List[B]): List[B] = Nil
   }
 
   case class Cons[+A](head: A, tail: List[A]) extends List[A] {
-    def map[B](f: A => B): List[B] = {
-      Cons(f(head), tail.map(f))
-    }
-    def flatMap[B](f: A => List[B]): List[B] = {
-      List.flatten(Cons(f(head), tail.map(f)))
-    } 
+    def map[B](f: A => B): List[B] = Cons(f(head), tail.map(f))
+    def flatMap[B](f: A => List[B]): List[B] = List.flatten(Cons(f(head), tail.map(f)))
   }
 
   object List {
@@ -237,7 +230,7 @@ object Ex3 {
     assert(List.filter(List(1, 2, 3, 3, 4, 4, 3))(x => x % 2 == 0) == List(2, 4, 4), "3.21 failed")
 
     // Excercise 3.20
-    // assert(List(1, 2, 3).flatMap { (x: Int) => List(x, x)} == List(1, 1, 2, 2, 3, 3))
+    assert(List(1, 2, 3).flatMap { (x: Int) => List(x, x)} == List(1, 1, 2, 2, 3, 3))
 
     // Excercise 3.21
     // assert(List(1, 2, 3).filter(_ % 2 == 0) == List(2))
