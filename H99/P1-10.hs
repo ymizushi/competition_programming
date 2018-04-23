@@ -25,6 +25,14 @@ myLength :: [a] -> Int
 myLength [] = 0
 myLength (head : tail) = 1 + myLength tail
 
+-- P5
+myReverse :: [a] -> [a]
+myReverse = foldl (flip (:)) []
+
+-- P6
+isPalindrome :: (Eq a) => [a] -> Bool
+isPalindrome l =  l == reverse l
+
 main = do
   print $ myLast [1, 2, 3]
   print $ myButLast [1, 2, 3, 4]
@@ -32,3 +40,8 @@ main = do
   print $ elementAt'"haskell" 5
   print $ myLength [123, 456, 789]
   print $ myLength "Hello, world!"
+  print $ myReverse "A man, a plan, a canal, panama!"
+  print $ myReverse [1, 2, 3, 4]
+  print $ isPalindrome [1, 2, 3]
+  print $ isPalindrome "madamimadam"
+  print $ isPalindrome [1,2,4,8,16,8,4,2,1]
