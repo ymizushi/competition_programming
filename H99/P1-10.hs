@@ -45,3 +45,4 @@ main = do
   print $ isPalindrome [1, 2, 3]
   print $ isPalindrome "madamimadam"
   print $ isPalindrome [1,2,4,8,16,8,4,2,1]
+  -- 次回 isPalindromeを別のやり方で解いてみる
