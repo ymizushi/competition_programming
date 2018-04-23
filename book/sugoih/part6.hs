@@ -1,3 +1,4 @@
+import Data.Char
 import Data.List
 
 numUniques :: (Eq a) => [a] -> Int
@@ -14,11 +15,17 @@ tails' (head : tail) = (head : tail) : (tails' tail)
 isIn :: (Eq a) => [a] -> [a] -> Bool
 needle `isIn` haystack = any (needle `isPrefixOf`) (tails haystack)
 
-f >| g = g . f
-
-import Data.Char
 encode :: Int -> String -> String
 encode offset msg = map (\c -> chr $ ord c + offset) msg
+
+sumKeta :: Int -> Int
+sumKeta = sum . map digitToInt . show
+
+firstSum40 :: Int  -> Int
+firstSum40 n 
+  | sumK == 40 =  n
+  | otherwise = firstSum40 (n+1)  
+  where sumK = sumKeta n
 
 main = do
   --- print $ numUniques [1, 5, 3, 2, 1, 6, 4, 3, 2, 1]
@@ -28,3 +35,5 @@ main = do
   --- print $ hoge 2
   print $ tails' ""
   print $ tails' "abcde"
+  print $ sumKeta 49998
+  print $ firstSum40 49998
