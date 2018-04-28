@@ -34,15 +34,15 @@ isPalindrome :: (Eq a) => [a] -> Bool
 isPalindrome l =  l == reverse l
 
 -- P8
-innerCompress :: String -> String -> String
-innerCompress "" acc = acc
-innerCompress (h:tail) acc
-  | acc == [] = innerCompress tail [h]
-  | h == (head acc) = innerCompress tail acc
-  | otherwise = innerCompress tail (acc ++ [h])
-
-compress :: String -> String
+compress :: (Eq a) => [a] -> [a]
 compress l = innerCompress l []
+  where 
+    innerCompress :: (Eq a) => [a] -> [a] -> [a]
+    innerCompress [] acc = acc
+    innerCompress (h:tail) acc
+      | acc == [] = innerCompress tail [h]
+      | h == (head acc) = innerCompress tail acc
+      | otherwise = innerCompress tail (acc ++ [h])
 
 main = do
   print $ myLast [1, 2, 3]
