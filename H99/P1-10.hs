@@ -33,6 +33,17 @@ myReverse = foldl (flip (:)) []
 isPalindrome :: (Eq a) => [a] -> Bool
 isPalindrome l =  l == reverse l
 
+-- P8
+innerCompress :: String -> String -> String
+innerCompress "" acc = acc
+innerCompress (h:tail) acc
+  | acc == [] = innerCompress tail [h]
+  | h == (head acc) = innerCompress tail acc
+  | otherwise = innerCompress tail (acc ++ [h])
+
+compress :: String -> String
+compress l = innerCompress l []
+
 main = do
   print $ myLast [1, 2, 3]
   print $ myButLast [1, 2, 3, 4]
@@ -46,3 +57,5 @@ main = do
   print $ isPalindrome "madamimadam"
   print $ isPalindrome [1,2,4,8,16,8,4,2,1]
   -- 次回 isPalindromeを別のやり方で解いてみる
+  print $ compress "aaaabccaadeeee"
+
