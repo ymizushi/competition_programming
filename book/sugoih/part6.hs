@@ -27,6 +27,22 @@ firstSum40 n
   | otherwise = firstSum40 (n+1)  
   where sumK = sumKeta n
 
+-- module Geometry.Sphere
+-- ( volume
+-- , area
+-- ) where
+--
+
+data Person = Person { firstName :: String
+                     , lastName :: String
+                     , age :: Int
+                     , height :: Float
+                     , phoneNumber :: String
+                     , flavor :: String } deriving (Show)
+
+volume :: Float -> Float
+volume radius = (4.0 / 3.0) * pi * (radius ^ 2)
+
 main = do
   --- print $ numUniques [1, 5, 3, 2, 1, 6, 4, 3, 2, 1]
   --- print $ wordCount "piyo hoge piyo hoge"

@@ -44,6 +44,17 @@ compress l = innerCompress l []
       | h == (head acc) = innerCompress tail acc
       | otherwise = innerCompress tail (acc ++ [h])
 
+isPalindrome' :: (Eq a) => [a] -> Bool
+isPalindrome' l =  (length (filter (\t -> (fst t) /= (snd t)) (zip l (reverse l)))) == 0
+
+data NestedList a = Elem a | List [NestedList a]
+flatten ::  NestedList a -> [a]
+flatten nl = 
+  | 
+
+-- P7
+--
+
 main = do
   print $ myLast [1, 2, 3]
   print $ myButLast [1, 2, 3, 4]
@@ -59,3 +70,5 @@ main = do
   -- 次回 isPalindromeを別のやり方で解いてみる
   print $ compress "aaaabccaadeeee"
 
+  print $ isPalindrome' "madamimadam"
+  print $ isPalindrome' [1,2,4,8,16,8,4,2,1]
