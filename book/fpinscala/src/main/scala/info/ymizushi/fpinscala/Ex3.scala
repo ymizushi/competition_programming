@@ -27,10 +27,6 @@ object Ex3 {
       }
     }
 
-    def foldRight2[A, B](as: List[A], z: B)(f: (A, B) => B):  B= {
-      
-    }
-    
     def sum(ints: List[Int]): Int = ints match {
       case Nil => 0
       case Cons(x, xs) => x + sum(xs)
@@ -149,6 +145,38 @@ object Ex3 {
       }
     }
 
+    def zipWith[A](l: List[A], r: List[A] ,adder: (A, A) => A): List[A] = {
+      (l, r) match {
+        case (Cons(lHead, lTail), Cons(rHead, rTail)) => Cons(adder(lHead, rHead), zipWith(lTail, rTail, adder))
+        case _ => Nil
+      }
+    }
+
+    def innerHasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
+      (sup, sub) match {
+        case (Cons(supHead, supTail), Cons(subHead, subTail)) => {
+          if (supHead == subHead) 
+            hasSubsequence(supTail, subTail)
+          else
+            hasSubsequence(supTail, sub)
+        }
+        case (_, Nil) => true
+        case (Nil, _) => false
+      }
+    }
+
+    def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
+      sup match {
+        case Cons(head, tail) => {
+          if (innerHasSubsequence(sup, sub))
+            true
+          else
+            innerHasSubsequence(tail, sub)
+        }
+        case Nil => false
+      }
+    }
+
     def mapInc(as: List[Int]): List[Int] = {
       as.map(_ + 1)
     }
@@ -242,7 +270,17 @@ object Ex3 {
     // Excercise 3.22
     assert(List.zipAdd(List(1, 2, 3), List(2, 3, 4)) == List(3, 5, 7))
     
+    // Excercise 3.23
+    assert(List.zipAdd(List(1, 2, 3), List(2, 3, 4)) == List(3, 5, 7))
 
+    // Excercise 3.24
+    assert(List.zipWith(List(1, 2, 3), List(2, 3, 4), (a:Int, b: Int) => {a + b}) == List(3, 5, 7))
+    assert(List.zipWith(List(1, 2, 3), List(2, 3, 4, 5, 6), (a:Int, b: Int) => {a + b}) == List(3, 5, 7))
+
+    println(List.hasSubsequence(List(2, 3, 4, 5, 6), List(3, 4)))
+    // Excercise 3.25
+    assert(List.hasSubsequence(List(2, 3, 4, 5, 6), List(3, 4)) == true)
+    assert(List.hasSubsequence(List(2, 3, 4, 5, 6), List(2, 4)) == true)
     Unit
   }
 }
