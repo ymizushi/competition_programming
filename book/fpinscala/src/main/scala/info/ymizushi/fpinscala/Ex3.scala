@@ -186,6 +186,19 @@ object Ex3 {
     }
   }
 
+  sealed trait Tree[+A] 
+  case class Leaf[A](value: A) extends Tree[A] 
+  case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A] 
+
+  object Tree {
+    def size[A](t: Tree[A]): Int = {
+      t match {
+        case Leaf(v) => 1
+        case Branch(l, r) => 1 + size(l) + size(r)
+      }
+    }
+  }
+
   def main(args: Array[String]):Unit = {
     // EXERCISE3.1
     val x = List(1, 2, 3, 4, 5) match {
@@ -269,18 +282,19 @@ object Ex3 {
     
     // Excercise 3.22
     assert(List.zipAdd(List(1, 2, 3), List(2, 3, 4)) == List(3, 5, 7))
-    
-    // Excercise 3.23
     assert(List.zipAdd(List(1, 2, 3), List(2, 3, 4)) == List(3, 5, 7))
 
-    // Excercise 3.24
+    // Excercise 3.23
     assert(List.zipWith(List(1, 2, 3), List(2, 3, 4), (a:Int, b: Int) => {a + b}) == List(3, 5, 7))
     assert(List.zipWith(List(1, 2, 3), List(2, 3, 4, 5, 6), (a:Int, b: Int) => {a + b}) == List(3, 5, 7))
 
-    println(List.hasSubsequence(List(2, 3, 4, 5, 6), List(3, 4)))
-    // Excercise 3.25
+    // Excercise 3.24
+    // TODO: 間違っているので治す
     assert(List.hasSubsequence(List(2, 3, 4, 5, 6), List(3, 4)) == true)
     assert(List.hasSubsequence(List(2, 3, 4, 5, 6), List(2, 4)) == true)
+
+    // Excercise 3.25
+    assert(Tree.size(Branch(Branch(Leaf(), Leaf()), Leaf())) == 5)
     Unit
   }
 }
