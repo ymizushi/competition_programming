@@ -197,6 +197,27 @@ object Ex3 {
         case Branch(l, r) => 1 + size(l) + size(r)
       }
     }
+
+    def maximum(t: Tree[Int]): Int = {
+      t match {
+        case Leaf(v) => v
+        case Branch(l, r) => { maximum(l) max maximum(r) }
+      }
+    }
+
+    def depth[A](t: Tree[A]): Int = {
+      t match {
+        case Leaf(v) => 0
+        case Branch(l, r) => 1 + (depth(l) max depth(r))
+      }
+    }
+
+    def map[A,B](t: Tree[A], f: A => B): Tree[B] = {
+      t match {
+        case Leaf(v) => Leaf(f(v))
+        case Branch(l, r) => Branch(map(l, f), map(r, f))
+      }
+    }
   }
 
   def main(args: Array[String]):Unit = {
@@ -294,7 +315,17 @@ object Ex3 {
     assert(List.hasSubsequence(List(2, 3, 4, 5, 6), List(2, 4)) == true)
 
     // Excercise 3.25
-    assert(Tree.size(Branch(Branch(Leaf(), Leaf()), Leaf())) == 5)
+    assert(Tree.size(Branch(Branch(Leaf(5), Leaf(1)), Leaf(2))) == 5)
+
+    // Excercise 3.26
+    assert(Tree.maximum(Branch(Branch(Leaf(6), Leaf(1)), Leaf(2))) == 6)
+
+    // Excercise 3.27
+    assert(Tree.depth(Branch(Branch(Leaf(6), Leaf(1)), Leaf(2))) == 2)
+
+
+    // Excercise 3.28
+    println(Tree.map(Branch(Branch(Leaf(6), Leaf(1)), Leaf(2)), (x: Int) => x.toString))
     Unit
   }
 }
