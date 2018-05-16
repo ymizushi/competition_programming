@@ -331,7 +331,7 @@ object Ex3 {
     println(Tree.map(Branch(Branch(Leaf(6), Leaf(1)), Leaf(2)), (x: Int) => x.toString))
 
     // Excercise 3.29
-    println(Tree.fold(Branch(Branch(Leaf(6), Leaf(1)), Leaf(2)), 0)((l: Int, r: Int) => {l + r}))
+    assert(Tree.fold(Branch(Branch(Leaf(6), Leaf(1)), Leaf(2)), 0)((l: Int, r: Int) => {l + r}) == 9)
     Unit
   }
 }
