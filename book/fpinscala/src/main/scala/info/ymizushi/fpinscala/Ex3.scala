@@ -154,14 +154,9 @@ object Ex3 {
 
     def innerHasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
       (sup, sub) match {
-        case (Cons(supHead, supTail), Cons(subHead, subTail)) => {
-          if (supHead == subHead) 
-            hasSubsequence(supTail, subTail)
-          else
-            hasSubsequence(supTail, sub)
-        }
+        case (Cons(supHead, supTail), Cons(subHead, subTail)) if supHead == subHead => innerHasSubsequence(supTail, subTail)
         case (_, Nil) => true
-        case (Nil, _) => false
+        case (_, _) => false
       }
     }
 
@@ -171,7 +166,7 @@ object Ex3 {
           if (innerHasSubsequence(sup, sub))
             true
           else
-            innerHasSubsequence(tail, sub)
+            hasSubsequence(tail, sub)
         }
         case Nil => false
       }
@@ -191,6 +186,14 @@ object Ex3 {
   case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A] 
 
   object Tree {
+    def fold[A, B](t: Tree[A], z: B)(f: (B, A) => B): B = {
+      t match {
+        case Leaf(v) => f(z,v)
+        case Branch(l, r) => fold(l, fold(r, z)(f))(f), 
+      }
+
+    }
+
     def size[A](t: Tree[A]): Int = {
       t match {
         case Leaf(v) => 1
@@ -310,9 +313,10 @@ object Ex3 {
     assert(List.zipWith(List(1, 2, 3), List(2, 3, 4, 5, 6), (a:Int, b: Int) => {a + b}) == List(3, 5, 7))
 
     // Excercise 3.24
-    // TODO: 間違っているので治す
     assert(List.hasSubsequence(List(2, 3, 4, 5, 6), List(3, 4)) == true)
-    assert(List.hasSubsequence(List(2, 3, 4, 5, 6), List(2, 4)) == true)
+    assert(List.hasSubsequence(List(2, 3, 4, 5, 6), List(2, 4)) == false)
+    assert(List.hasSubsequence(List(2, 3, 4, 5, 6), List(4, 5, 6)) == true)
+    assert(List.hasSubsequence(List(2, 3, 4, 5, 6), List(4, 6)) == false)
 
     // Excercise 3.25
     assert(Tree.size(Branch(Branch(Leaf(5), Leaf(1)), Leaf(2))) == 5)
@@ -323,9 +327,11 @@ object Ex3 {
     // Excercise 3.27
     assert(Tree.depth(Branch(Branch(Leaf(6), Leaf(1)), Leaf(2))) == 2)
 
-
     // Excercise 3.28
     println(Tree.map(Branch(Branch(Leaf(6), Leaf(1)), Leaf(2)), (x: Int) => x.toString))
+
+    // Excercise 3.29
+    println(Tree.fold(Branch(Branch(Leaf(6), Leaf(1)), Leaf(2)), 0)((l: Int, r: Int) => {l + r}))
     Unit
   }
 }
