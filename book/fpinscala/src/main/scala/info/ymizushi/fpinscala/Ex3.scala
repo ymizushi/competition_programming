@@ -186,12 +186,11 @@ object Ex3 {
   case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A] 
 
   object Tree {
-    def fold[A, B](t: Tree[A], z: B)(f: (B, A) => B): B = {
+    def fold[A, B](t: Tree[A], mapper: A => B, merger: (B, B) => B): B = {
       t match {
-        case Leaf(v) => f(z,v)
-        case Branch(l, r) => fold(l, fold(r, z)(f))(f), 
+        case Leaf(v) => mapper(v)
+        case Branch(l, r) => merger(fold(l, mapper, merger), fold(r, mapper, merger))
       }
-
     }
 
     def size[A](t: Tree[A]): Int = {
@@ -199,6 +198,10 @@ object Ex3 {
         case Leaf(v) => 1
         case Branch(l, r) => 1 + size(l) + size(r)
       }
+    }
+
+    def size2[A](t: Tree[A]): Int = {
+      fold(t, {(x: A) => 1}, (l: Int, r: Int) => 1 + l + r)
     }
 
     def maximum(t: Tree[Int]): Int = {
@@ -220,6 +223,10 @@ object Ex3 {
         case Leaf(v) => Leaf(f(v))
         case Branch(l, r) => Branch(map(l, f), map(r, f))
       }
+    }
+
+    def map2[A,B](t: Tree[A], f: A => B): Tree[B] = {
+      fold(t, {(x: A) => Leaf(f(x))}, {(l: Tree[B], r: Tree[B]) => Branch(l, r)})
     }
   }
 
@@ -331,7 +338,8 @@ object Ex3 {
     println(Tree.map(Branch(Branch(Leaf(6), Leaf(1)), Leaf(2)), (x: Int) => x.toString))
 
     // Excercise 3.29
-    assert(Tree.fold(Branch(Branch(Leaf(6), Leaf(1)), Leaf(2)), 0)((l: Int, r: Int) => {l + r}) == 9)
+    println(Tree.size2(Branch(Branch(Leaf(5), Leaf(1)), Leaf(2))) == 5)
+    println(Tree.map2(Branch(Branch(Leaf(5), Leaf(1)), Leaf(2)), {(x: Int) => x.toDouble}))
     Unit
   }
 }
