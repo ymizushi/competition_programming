@@ -27,10 +27,6 @@ object Ex3 {
       }
     }
 
-    def foldRight2[A, B](as: List[A], z: B)(f: (A, B) => B):  B= {
-      
-    }
-    
     def sum(ints: List[Int]): Int = ints match {
       case Nil => 0
       case Cons(x, xs) => x + sum(xs)
@@ -149,12 +145,88 @@ object Ex3 {
       }
     }
 
+    def zipWith[A](l: List[A], r: List[A] ,adder: (A, A) => A): List[A] = {
+      (l, r) match {
+        case (Cons(lHead, lTail), Cons(rHead, rTail)) => Cons(adder(lHead, rHead), zipWith(lTail, rTail, adder))
+        case _ => Nil
+      }
+    }
+
+    def innerHasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
+      (sup, sub) match {
+        case (Cons(supHead, supTail), Cons(subHead, subTail)) if supHead == subHead => innerHasSubsequence(supTail, subTail)
+        case (_, Nil) => true
+        case (_, _) => false
+      }
+    }
+
+    def hasSubsequence[A](sup: List[A], sub: List[A]): Boolean = {
+      sup match {
+        case Cons(head, tail) => {
+          if (innerHasSubsequence(sup, sub))
+            true
+          else
+            hasSubsequence(tail, sub)
+        }
+        case Nil => false
+      }
+    }
+
     def mapInc(as: List[Int]): List[Int] = {
       as.map(_ + 1)
     }
 
     def mapDoubleToString(as: List[Double]): List[String] = {
       as.map(_.toString)
+    }
+  }
+
+  sealed trait Tree[+A] 
+  case class Leaf[A](value: A) extends Tree[A] 
+  case class Branch[A](left: Tree[A], right: Tree[A]) extends Tree[A] 
+
+  object Tree {
+    def fold[A, B](t: Tree[A], mapper: A => B, merger: (B, B) => B): B = {
+      t match {
+        case Leaf(v) => mapper(v)
+        case Branch(l, r) => merger(fold(l, mapper, merger), fold(r, mapper, merger))
+      }
+    }
+
+    def size[A](t: Tree[A]): Int = {
+      t match {
+        case Leaf(v) => 1
+        case Branch(l, r) => 1 + size(l) + size(r)
+      }
+    }
+
+    def size2[A](t: Tree[A]): Int = {
+      fold(t, {(x: A) => 1}, (l: Int, r: Int) => 1 + l + r)
+    }
+
+    def maximum(t: Tree[Int]): Int = {
+      t match {
+        case Leaf(v) => v
+        case Branch(l, r) => { maximum(l) max maximum(r) }
+      }
+    }
+
+    def depth[A](t: Tree[A]): Int = {
+      t match {
+        case Leaf(v) => 0
+        case Branch(l, r) => 1 + (depth(l) max depth(r))
+      }
+    }
+
+    def map[A,B](t: Tree[A], f: A => B): Tree[B] = {
+      t match {
+        case Leaf(v) => Leaf(f(v))
+        case Branch(l, r) => Branch(map(l, f), map(r, f))
+      }
+    }
+
+    def map2[A,B](t: Tree[A], f: A => B): Tree[B] = {
+      fold(t, {(x: A) => Leaf(f(x))}, {(l: Tree[B], r: Tree[B]) => Branch(l, r)})
     }
   }
 
@@ -241,8 +313,33 @@ object Ex3 {
     
     // Excercise 3.22
     assert(List.zipAdd(List(1, 2, 3), List(2, 3, 4)) == List(3, 5, 7))
-    
+    assert(List.zipAdd(List(1, 2, 3), List(2, 3, 4)) == List(3, 5, 7))
 
+    // Excercise 3.23
+    assert(List.zipWith(List(1, 2, 3), List(2, 3, 4), (a:Int, b: Int) => {a + b}) == List(3, 5, 7))
+    assert(List.zipWith(List(1, 2, 3), List(2, 3, 4, 5, 6), (a:Int, b: Int) => {a + b}) == List(3, 5, 7))
+
+    // Excercise 3.24
+    assert(List.hasSubsequence(List(2, 3, 4, 5, 6), List(3, 4)) == true)
+    assert(List.hasSubsequence(List(2, 3, 4, 5, 6), List(2, 4)) == false)
+    assert(List.hasSubsequence(List(2, 3, 4, 5, 6), List(4, 5, 6)) == true)
+    assert(List.hasSubsequence(List(2, 3, 4, 5, 6), List(4, 6)) == false)
+
+    // Excercise 3.25
+    assert(Tree.size(Branch(Branch(Leaf(5), Leaf(1)), Leaf(2))) == 5)
+
+    // Excercise 3.26
+    assert(Tree.maximum(Branch(Branch(Leaf(6), Leaf(1)), Leaf(2))) == 6)
+
+    // Excercise 3.27
+    assert(Tree.depth(Branch(Branch(Leaf(6), Leaf(1)), Leaf(2))) == 2)
+
+    // Excercise 3.28
+    println(Tree.map(Branch(Branch(Leaf(6), Leaf(1)), Leaf(2)), (x: Int) => x.toString))
+
+    // Excercise 3.29
+    println(Tree.size2(Branch(Branch(Leaf(5), Leaf(1)), Leaf(2))) == 5)
+    println(Tree.map2(Branch(Branch(Leaf(5), Leaf(1)), Leaf(2)), {(x: Int) => x.toDouble}))
     Unit
   }
 }
