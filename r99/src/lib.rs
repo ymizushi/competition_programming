@@ -31,6 +31,19 @@ pub fn pallndrome<T>(v: Vec<T>) -> bool where T: PartialEq {
     true
 }
 
+pub fn flatten<T>(a: Node<T>) -> Vec<T> {
+    use Node::*;
+    match a {
+        One(x) => vec![x],
+        Many(xs) => xs.into_iter().flat_map(|x: Node<T>| flatten(x).into_iter()).collect(),
+    }
+}
+
+pub enum Node<T> {
+    One(T),
+    Many(Vec<Node<T>>),
+}
+
 
 #[cfg(test)]
 mod tests {
@@ -79,5 +92,21 @@ mod tests {
     fn p06_pallndrome() {
         assert!(pallndrome(vec![1,2,3,2,1]));
         assert!(!pallndrome(vec![1,3,3,2,1]));
+    }
+
+    #[test]
+    fn p07_flatten() {
+        use super::Node::*;
+        let xs = Many(
+            vec![
+                Many(vec![One(1), One(1)]),
+                One(1),
+                Many(vec![
+                     One(3),
+                     Many(vec![One(5), One(8)])]
+                ),
+            ]
+        );
+        assert_eq!(vec![1, 1, 1, 3 ,5 ,8], flatten(xs));
     }
 }
