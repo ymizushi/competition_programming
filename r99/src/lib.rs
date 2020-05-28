@@ -39,6 +39,20 @@ pub fn flatten<T>(a: Node<T>) -> Vec<T> {
     }
 }
 
+pub fn compress<T>(v: Vec<T>) -> Vec<T> where T: PartialEq {
+    v.into_iter().fold(Vec::new(), |mut acc, x| {
+        match acc.last() {
+            Some(a) if *a == x => {
+                acc
+            },
+            _ => {
+                acc.push(x);
+                acc
+            }
+        }
+    })
+}
+
 pub enum Node<T> {
     One(T),
     Many(Vec<Node<T>>),
@@ -108,5 +122,10 @@ mod tests {
             ]
         );
         assert_eq!(vec![1, 1, 1, 3 ,5 ,8], flatten(xs));
+    }
+
+    #[test]
+    fn p08_compress() {
+        assert_eq!(vec!['a', 'b', 'c', 'a' ,'d' ,'e'], compress(vec!['a', 'a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']));
     }
 }
