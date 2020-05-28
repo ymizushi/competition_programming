@@ -53,6 +53,29 @@ pub fn compress<T>(v: Vec<T>) -> Vec<T> where T: PartialEq {
     })
 }
 
+pub fn pack<T>(v: Vec<T>) -> Vec<Vec<T>> where T: PartialEq  {
+    v.into_iter().fold(vec![], |mut acc, x| {
+        match acc.last_mut() {
+            Some(a) => {
+                match a.last() {
+                    Some(b) if *b == x => {
+                        a.push(x);
+                        acc
+                    }
+                    _ => {
+                        acc.push(vec![x]);
+                        acc
+                    }
+                }
+            },
+            None => {
+                acc.push(vec![x]);
+                acc
+            }
+        }
+    })
+}
+
 pub enum Node<T> {
     One(T),
     Many(Vec<Node<T>>),
@@ -127,5 +150,10 @@ mod tests {
     #[test]
     fn p08_compress() {
         assert_eq!(vec!['a', 'b', 'c', 'a' ,'d' ,'e'], compress(vec!['a', 'a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']));
+    }
+
+    #[test]
+    fn p09_pack() {
+        assert_eq!(vec![vec!['a', 'a', 'a', 'a', 'a'], vec!['b'], vec!['c', 'c'], vec!['a', 'a'] ,vec!['d'] ,vec!['e', 'e', 'e', 'e']], pack(vec!['a', 'a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']));
     }
 }
