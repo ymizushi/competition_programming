@@ -131,6 +131,16 @@ pub fn encode_modified<T>(v: Vec<T>) -> Vec<Any<T>> where T: PartialEq + Copy {
     })
 }
 
+pub fn decode<T: Copy>(v: Vec<(u32, T)>) -> Vec<T> {
+    v.into_iter().fold(Vec::new(), |mut acc, x| {
+        let index = &x.0;
+        for _ in 0..*index {
+            acc.push(x.1);
+        }
+        acc
+    })
+}
+
 pub enum Node<T> {
     One(T),
     Many(Vec<Node<T>>),
@@ -221,5 +231,10 @@ mod tests {
     fn p11_encode_modified() {
         use super::Any::*;
         assert_eq!(vec![Many(4, 'a'), One('b'), Many(2, 'c'), Many(2, 'a') , One('d') , Many(4, 'e')], encode_modified(vec!['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']));
+    }
+
+    #[test]
+    fn p12_decode() {
+        assert_eq!(vec!['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e'], decode(vec![(4, 'a'), (1, 'b'), (2, 'c'), (2, 'a') ,(1, 'd') ,(4, 'e')]));
     }
 }
