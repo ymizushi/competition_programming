@@ -178,6 +178,26 @@ pub fn duplicate_n<T>(n: i32, v: Vec<T>) -> Vec<T>  where T: Copy {
     })
 }
 
+pub fn drop<T>(n: usize, v: Vec<T>) -> Vec<T>  where T: Copy + PartialEq {
+    v.into_iter().enumerate().fold(Vec::new(), |mut acc, (i, x)| {
+        if i % n != n-1 {
+            acc.push(x);
+        } 
+        acc
+    })
+}
+
+pub fn split<T>(n: usize, v: Vec<T>) -> (Vec<T>, Vec<T>)  where T: Copy + PartialEq {
+    v.into_iter().enumerate().fold((vec![], vec![]), |mut acc, (i, x)| {
+        if i <= n-1 {
+            acc.0.push(x)
+        } else {
+            acc.1.push(x)
+        }
+        acc
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -282,5 +302,15 @@ mod tests {
     #[test]
     fn p15_duplicate_n() {
         assert_eq!(vec!['a', 'a', 'a', 'b', 'b', 'b', 'c', 'c', 'c', 'c', 'c', 'c', 'd', 'd', 'd'], duplicate_n(3, vec!['a', 'b', 'c', 'c', 'd']));
+    }
+
+    #[test]
+    fn p16_drop() {
+        assert_eq!(vec!['a', 'b', 'd', 'e', 'g', 'h', 'j', 'k'], drop(3, vec!['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k']));
+    }
+
+    #[test]
+    fn p17_split() {
+        assert_eq!((vec!['a', 'b', 'c'], vec!['d', 'e', 'f', 'g', 'h', 'i', 'j', 'k']), split(3, vec!['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k']));
     }
 }
