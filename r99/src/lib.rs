@@ -146,6 +146,28 @@ pub enum Node<T> {
     Many(Vec<Node<T>>),
 }
 
+pub fn encode_direct<T>(v: Vec<T>) -> Vec<(u32, T)> where T: PartialEq {
+    v.into_iter().fold(vec![], |mut acc, x| {
+        match acc.last_mut() {
+            Some(a) if a.1 == x => {
+                a.0 += 1;
+                acc
+            },
+            _ => {
+                acc.push((1, x));
+                acc
+            }
+        }
+    })
+}
+
+pub fn duplicate<T>(v: Vec<T>) -> Vec<T>  where T: Copy {
+    v.into_iter().fold(Vec::new(), |mut acc, x| {
+        acc.push(x);
+        acc.push(x);
+        acc
+    })
+}
 
 #[cfg(test)]
 mod tests {
@@ -236,5 +258,15 @@ mod tests {
     #[test]
     fn p12_decode() {
         assert_eq!(vec!['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e'], decode(vec![(4, 'a'), (1, 'b'), (2, 'c'), (2, 'a') ,(1, 'd') ,(4, 'e')]));
+    }
+
+    #[test]
+    fn p13_encode_direct() {
+        assert_eq!(vec![(4, 'a'), (1, 'b'), (2, 'c'), (2, 'a') ,(1, 'd') ,(4, 'e')], encode_direct(vec!['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']));
+    }
+
+    #[test]
+    fn p14_duplicate() {
+        assert_eq!(vec!['a', 'a', 'b', 'b', 'c', 'c', 'c', 'c', 'd', 'd'], duplicate(vec!['a', 'b', 'c', 'c', 'd']));
     }
 }
