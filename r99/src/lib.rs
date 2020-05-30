@@ -96,6 +96,45 @@ pub fn encode<T>(v: Vec<T>) -> Vec<(u32, T)> where T: PartialEq {
     })
 }
 
+#[derive(Debug, PartialEq)]
+pub enum Any<T> {
+    Many(u32, T),
+    One(T),
+}
+
+pub fn encode_modified<T>(v: Vec<T>) -> Vec<Any<T>> where T: PartialEq + Copy {
+    v.into_iter().fold(vec![], |mut acc, x| {
+        match acc.last_mut() {
+            Some(a) => {
+                match a {
+                    Any::Many(n, c) => {
+                        if *c == x {
+                            *a = Any::Many(*n + 1, *c);
+                            acc
+                        } else {
+                            acc.push(Any::One(x));
+                            acc
+                        }
+                    }
+                    Any::One(c) => {
+                        if *c == x {
+                            *a = Any::Many(2, *c);
+                            acc
+                        } else {
+                            acc.push(Any::One(x));
+                            acc
+                        }
+                    }
+                }
+            },
+            None => {
+                acc.push(Any::One(x));
+                acc
+            }
+        }
+    })
+}
+
 pub enum Node<T> {
     One(T),
     Many(Vec<Node<T>>),
@@ -169,16 +208,22 @@ mod tests {
 
     #[test]
     fn p08_compress() {
-        assert_eq!(vec!['a', 'b', 'c', 'a' ,'d' ,'e'], compress(vec!['a', 'a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']));
+        assert_eq!(vec!['a', 'b', 'c', 'a' ,'d' ,'e'], compress(vec!['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']));
     }
 
     #[test]
     fn p09_pack() {
-        assert_eq!(vec![vec!['a', 'a', 'a', 'a', 'a'], vec!['b'], vec!['c', 'c'], vec!['a', 'a'] ,vec!['d'] ,vec!['e', 'e', 'e', 'e']], pack(vec!['a', 'a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']));
+        assert_eq!(vec![vec!['a', 'a', 'a', 'a'], vec!['b'], vec!['c', 'c'], vec!['a', 'a'] ,vec!['d'] ,vec!['e', 'e', 'e', 'e']], pack(vec!['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']));
     }
 
     #[test]
     fn p10_encode() {
-        assert_eq!(vec![(5, 'a'), (1, 'b'), (2, 'c'), (2, 'a') ,(1, 'd') ,(4, 'e')], encode(vec!['a', 'a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']));
+        assert_eq!(vec![(4, 'a'), (1, 'b'), (2, 'c'), (2, 'a') ,(1, 'd') ,(4, 'e')], encode(vec!['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']));
+    }
+
+    #[test]
+    fn p11_encode_modified() {
+        use super::Any::*;
+        assert_eq!(vec![Many(4, 'a'), One('b'), Many(2, 'c'), Many(2, 'a') , One('d') , Many(4, 'e')], encode_modified(vec!['a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']));
     }
 }
