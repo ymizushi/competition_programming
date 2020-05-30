@@ -76,6 +76,26 @@ pub fn pack<T>(v: Vec<T>) -> Vec<Vec<T>> where T: PartialEq  {
     })
 }
 
+pub fn encode<T>(v: Vec<T>) -> Vec<(u32, T)> where T: PartialEq {
+    v.into_iter().fold(vec![], |mut acc, x| {
+        match acc.last_mut() {
+            Some(a) => {
+                if a.1 == x {
+                    a.0 += 1;
+                    acc
+                } else {
+                    acc.push((1, x));
+                    acc
+                }
+            },
+            None => {
+                acc.push((1, x));
+                acc
+            }
+        }
+    })
+}
+
 pub enum Node<T> {
     One(T),
     Many(Vec<Node<T>>),
@@ -155,5 +175,10 @@ mod tests {
     #[test]
     fn p09_pack() {
         assert_eq!(vec![vec!['a', 'a', 'a', 'a', 'a'], vec!['b'], vec!['c', 'c'], vec!['a', 'a'] ,vec!['d'] ,vec!['e', 'e', 'e', 'e']], pack(vec!['a', 'a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']));
+    }
+
+    #[test]
+    fn p10_encode() {
+        assert_eq!(vec![(5, 'a'), (1, 'b'), (2, 'c'), (2, 'a') ,(1, 'd') ,(4, 'e')], encode(vec!['a', 'a', 'a', 'a', 'a', 'b', 'c', 'c', 'a', 'a', 'd', 'e', 'e', 'e', 'e']));
     }
 }
