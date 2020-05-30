@@ -79,16 +79,11 @@ pub fn pack<T>(v: Vec<T>) -> Vec<Vec<T>> where T: PartialEq  {
 pub fn encode<T>(v: Vec<T>) -> Vec<(u32, T)> where T: PartialEq {
     v.into_iter().fold(vec![], |mut acc, x| {
         match acc.last_mut() {
-            Some(a) => {
-                if a.1 == x {
-                    a.0 += 1;
-                    acc
-                } else {
-                    acc.push((1, x));
-                    acc
-                }
+            Some(a) if a.1 == x => {
+                a.0 += 1;
+                acc
             },
-            None => {
+            _ => {
                 acc.push((1, x));
                 acc
             }
