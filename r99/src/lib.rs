@@ -169,6 +169,15 @@ pub fn duplicate<T>(v: Vec<T>) -> Vec<T>  where T: Copy {
     })
 }
 
+pub fn duplicate_n<T>(n: i32, v: Vec<T>) -> Vec<T>  where T: Copy {
+    v.into_iter().fold(Vec::new(), |mut acc, x| {
+        for _ in 0..n {
+            acc.push(x)
+        }
+        acc
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -268,5 +277,10 @@ mod tests {
     #[test]
     fn p14_duplicate() {
         assert_eq!(vec!['a', 'a', 'b', 'b', 'c', 'c', 'c', 'c', 'd', 'd'], duplicate(vec!['a', 'b', 'c', 'c', 'd']));
+    }
+
+    #[test]
+    fn p15_duplicate_n() {
+        assert_eq!(vec!['a', 'a', 'a', 'b', 'b', 'b', 'c', 'c', 'c', 'c', 'c', 'c', 'd', 'd', 'd'], duplicate_n(3, vec!['a', 'b', 'c', 'c', 'd']));
     }
 }
