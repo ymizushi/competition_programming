@@ -103,32 +103,33 @@ pub enum Any<T> {
 }
 
 pub fn encode_modified<T>(v: Vec<T>) -> Vec<Any<T>> where T: PartialEq + Copy {
+    use Any::*;
     v.into_iter().fold(vec![], |mut acc, x| {
         match acc.last_mut() {
             Some(a) => {
                 match a {
-                    Any::Many(n, c) => {
+                    Many(n, c) => {
                         if *c == x {
-                            *a = Any::Many(*n + 1, *c);
+                            *a = Many(*n + 1, *c);
                             acc
                         } else {
-                            acc.push(Any::One(x));
+                            acc.push(One(x));
                             acc
                         }
                     }
-                    Any::One(c) => {
+                    One(c) => {
                         if *c == x {
-                            *a = Any::Many(2, *c);
+                            *a = Many(2, *c);
                             acc
                         } else {
-                            acc.push(Any::One(x));
+                            acc.push(One(x));
                             acc
                         }
                     }
                 }
             },
             None => {
-                acc.push(Any::One(x));
+                acc.push(One(x));
                 acc
             }
         }
