@@ -198,6 +198,38 @@ pub fn split<T>(n: usize, v: Vec<T>) -> (Vec<T>, Vec<T>)  where T: Copy + Partia
     })
 }
 
+pub fn slice<T>(j: usize, k: usize, v: Vec<T>) -> Vec<T>  where T: Copy + PartialEq {
+    v.into_iter().enumerate().fold(vec![], |mut acc, (i, x)| {
+        if j <= i && i <= k-1 {
+            acc.push(x)
+        }
+        acc
+    })
+}
+
+pub fn rotate<T>(n: i32, v: Vec<T>) -> Vec<T> where T: std::fmt::Debug {
+    let length = v.len() as i32;
+    let (mut left, mut right) = v.into_iter().enumerate().fold((vec![], vec![]), |mut acc, (i, x)| {
+        let index = i as i32;
+        if n >= 0 {
+            if index <= n-1 {
+                acc.0.push(x);
+            } else {
+                acc.1.push(x);
+            }
+        } else {
+            if index < length + n {
+                acc.0.push(x);
+            } else {
+                acc.1.push(x);
+            }
+        }
+        acc
+    });
+    right.append(&mut left);
+    right
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -312,5 +344,16 @@ mod tests {
     #[test]
     fn p17_split() {
         assert_eq!((vec!['a', 'b', 'c'], vec!['d', 'e', 'f', 'g', 'h', 'i', 'j', 'k']), split(3, vec!['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k']));
+    }
+
+    #[test]
+    fn p18_slice() {
+        assert_eq!(vec!['d', 'e', 'f', 'g'], slice(3, 7, vec!['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k']));
+    }
+
+    #[test]
+    fn p19_rotate() {
+        assert_eq!(vec!['d', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'a', 'b', 'c'], rotate(3, vec!['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k']));
+        assert_eq!(vec!['j', 'k', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'], rotate(-2, vec!['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k']));
     }
 }
