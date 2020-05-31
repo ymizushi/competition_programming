@@ -212,7 +212,7 @@ pub fn rotate<T>(n: i32, v: Vec<T>) -> Vec<T> where T: std::fmt::Debug {
     let (mut left, mut right) = v.into_iter().enumerate().fold((vec![], vec![]), |mut acc, (i, x)| {
         let index = i as i32;
         if n >= 0 {
-            if index <= n-1 {
+            if index < n {
                 acc.0.push(x);
             } else {
                 acc.1.push(x);
@@ -228,6 +228,18 @@ pub fn rotate<T>(n: i32, v: Vec<T>) -> Vec<T> where T: std::fmt::Debug {
     });
     right.append(&mut left);
     right
+}
+
+pub fn remove_at<T>(n: usize, v: Vec<T>) -> (Vec<T>, T) where T: PartialEq + Copy {
+    let (result, chars) = v.into_iter().enumerate().fold((vec![], vec![]), |mut acc, (i, x)| {
+        if i == n {
+            acc.1.push(x);
+        } else {
+            acc.0.push(x);
+        }
+        acc
+    });
+    (result, chars[0])
 }
 
 #[cfg(test)]
@@ -355,5 +367,10 @@ mod tests {
     fn p19_rotate() {
         assert_eq!(vec!['d', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'a', 'b', 'c'], rotate(3, vec!['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k']));
         assert_eq!(vec!['j', 'k', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'], rotate(-2, vec!['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k']));
+    }
+
+    #[test]
+    fn p20_remove_at() {
+        assert_eq!((vec!['a', 'c', 'd'], 'b'), remove_at(1, vec!['a', 'b', 'c', 'd']));
     }
 }
