@@ -256,7 +256,6 @@ pub fn range(start: i32, end: i32) -> Vec<i32> {
 pub fn random_select<A>(n: i32, mut v: Vec<A>) -> Vec<A> where A: std::fmt::Debug {
     let mut rng = rand::thread_rng();
     v.shuffle(&mut rng);
-    println!("{:?}", v);
     v.into_iter().enumerate().filter(|(i, _)| {
         let cond_index = *i as i32;
         cond_index < n
@@ -271,6 +270,12 @@ pub fn lotto(n: i32, max: i32) -> Vec<i32> {
         let cond_index = *i as i32;
         cond_index < n
     }).map(|(_, e)| e).collect()
+}
+
+pub fn random_permute<A>(mut v: Vec<A>) -> Vec<A> where A: std::fmt::Debug {
+    let mut rng = rand::thread_rng();
+    v.shuffle(&mut rng);
+    v
 }
 
 #[cfg(test)]
@@ -425,5 +430,8 @@ mod tests {
         assert_eq!(6, lotto(6, 49).len());
     }
 
-
+    #[test]
+    fn p25_random_permute() {
+        assert_eq!(6, random_permute(vec!['a', 'b', 'c', 'd', 'e', 'f']).len());
+    }
 }
