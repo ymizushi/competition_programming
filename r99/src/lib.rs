@@ -1,3 +1,5 @@
+use rand::prelude::*;
+
 pub fn last<E>(e: &Vec<E>) -> E where E: Copy {
     e.last().unwrap().clone()
 }
@@ -16,7 +18,7 @@ pub fn length<T>(v: &Vec<T>) -> usize where T: Copy {
 }
 
 pub fn reverse<T>(v: &mut Vec<T>) -> &Vec<T> {
-    v.reverse();
+    (*v).reverse();
     v
 }
 
@@ -242,6 +244,35 @@ pub fn remove_at<T>(n: usize, v: Vec<T>) -> (Vec<T>, T) where T: PartialEq + Cop
     (result, chars[0])
 }
 
+pub fn insert_at<A>(name: A, index: usize, mut v: Vec<A>) -> Vec<A> {
+    v.insert(index, name);
+    v
+}
+
+pub fn range(start: i32, end: i32) -> Vec<i32> {
+    (start..end+1).collect()
+}
+
+pub fn random_select<A>(n: i32, mut v: Vec<A>) -> Vec<A> where A: std::fmt::Debug {
+    let mut rng = rand::thread_rng();
+    v.shuffle(&mut rng);
+    println!("{:?}", v);
+    v.into_iter().enumerate().filter(|(i, _)| {
+        let cond_index = *i as i32;
+        cond_index < n
+    }).map(|(_, e)| e).collect()
+}
+
+pub fn lotto(n: i32, max: i32) -> Vec<i32> {
+    let mut rng = rand::thread_rng();
+    let mut random_numbers: Vec<i32> = (1..max+1).collect();
+    random_numbers.shuffle(&mut rng);
+    random_numbers.into_iter().enumerate().filter(|(i, _)| {
+        let cond_index = *i as i32;
+        cond_index < n
+    }).map(|(_, e)| e).collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -373,4 +404,26 @@ mod tests {
     fn p20_remove_at() {
         assert_eq!((vec!['a', 'c', 'd'], 'b'), remove_at(1, vec!['a', 'b', 'c', 'd']));
     }
+
+    #[test]
+    fn p21_insert_at() {
+        assert_eq!(vec!["a", "new", "b", "c", "d"], insert_at("new", 1, vec!["a", "b", "c", "d"]));
+    }
+
+    #[test]
+    fn p22_range() {
+        assert_eq!(vec![4, 5, 6, 7, 8, 9], range(4, 9));
+    }
+
+    #[test]
+    fn p23_random_select() {
+        assert_eq!(3, random_select(3, vec!['a', 'b', 'c', 'd', 'f', 'g', 'h']).len());
+    }
+
+    #[test]
+    fn p24_lotto() {
+        assert_eq!(6, lotto(6, 49).len());
+    }
+
+
 }
