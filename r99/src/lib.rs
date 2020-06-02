@@ -143,11 +143,6 @@ pub fn decode<T: Copy>(v: Vec<(u32, T)>) -> Vec<T> {
     })
 }
 
-pub enum Node<T> {
-    One(T),
-    Many(Vec<Node<T>>),
-}
-
 pub fn encode_direct<T>(v: Vec<T>) -> Vec<(u32, T)> where T: PartialEq {
     v.into_iter().fold(vec![], |mut acc, x| {
         match acc.last_mut() {
@@ -277,6 +272,30 @@ pub fn random_permute<A>(mut v: Vec<A>) -> Vec<A> where A: std::fmt::Debug {
     v.shuffle(&mut rng);
     v
 }
+
+pub enum Node<T> {
+    One(T),
+    Many(Vec<Node<T>>),
+}
+
+pub fn combinations<A>(n: i32, v: Vec<A>) -> Vec<Vec<A>>{
+    vec![vec![]]
+}
+
+// pub fn create_tree<A>(root: Node<A>, elements: Vec<A>) -> Node<A> {
+//     use Node::*;
+//     for (i, v) in elements.iter().enumerate() {
+//         match v {
+//             Many(mut inner_v) => {
+//                 if n != 3 {
+//                     inner_v.push(v)
+//                 }
+//             }
+//             One(value) => {}
+//         }
+//     }
+//     root
+// }
 
 #[cfg(test)]
 mod tests {
@@ -433,5 +452,10 @@ mod tests {
     #[test]
     fn p25_random_permute() {
         assert_eq!(6, random_permute(vec!['a', 'b', 'c', 'd', 'e', 'f']).len());
+    }
+
+    #[test]
+    fn p26_combinations() {
+        assert_eq!(vec![vec![]], combinations(3, vec!['a', 'b', 'c', 'd', 'e', 'f']));
     }
 }
