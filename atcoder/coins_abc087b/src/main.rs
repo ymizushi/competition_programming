@@ -39,5 +39,5 @@ fn main() {
 
     let num = patterns(a, b, c, x);
 
-    println!("{}", num);
+    println!("{}\n", num);
 }
