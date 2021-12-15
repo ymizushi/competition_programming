@@ -2,8 +2,8 @@ organization := "info.ymizushi"
 
 name := "fpinscala"
 
-scalaVersion := "2.12.4"
+scalaVersion := "3.1.0"
 
-libraryDependencies ++= Seq(
-  "org.scalatest" %% "scalatest" % "3.0.3" % "test",
-)
+libraryDependencies += "org.scalactic" %% "scalactic" % "3.2.10"
+libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.10" % "test"
+resolvers += "Artima Maven Repository" at "http://repo.artima.com/releases"

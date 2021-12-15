@@ -1,0 +1,1 @@
+{"name":"sbt","version":"1.5.6","bspVersion":"2.0.0-M5","languages":["scala"],"argv":["/home/ymizushi/.sdkman/candidates/java/11.0.8.hs-adpt/bin/java","-Xms100m","-Xmx100m","-classpath","/home/ymizushi/.sdkman/candidates/sbt/1.5.6/bin/sbt-launch.jar","xsbt.boot.Boot","-bsp","--sbt-launch-jar=/home/ymizushi/.sdkman/candidates/sbt/1.5.6/bin/sbt-launch.jar"]}
